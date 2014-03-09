@@ -1,0 +1,29 @@
+/*------------------------------------------------------------------------------------------------------------
+1. Read an image file (src/image/Week_01_Homework.png) 
+2. Separate the image into three components (red-green-blue) 
+3. Compute the mean, standard deviation, minimum, and maximum of the pixels in the green component 
+4. Subtract the mean from each pixel of the input green component 
+a. If the pixel value drops below 0, set that pixel value to 0 
+5. Write the resultant image to an image file (BMP, PNG) 
+6. Subtract the standard deviation from each pixel of the input green component 
+a. If the pixel value drops below 0, set that pixel value to 0 
+7. Write the resultant image to an image file (BMP, PNG, other “standard” uncompressed format) 
+
+ImageJ: http://rsbweb.nih.gov/ij/developer/source/index.html
+------------------------------------------------------------------------------------------------------------*/
+package project01;
+
+public class Project01 {
+
+    public static void main(String[] args) {
+        System.out.println("Project 01");
+        
+        ImageRW image = new ImageRW();
+        int grn[][] = image.ImageRead("src/image/Week_01_Homework.png");
+        System.out.println(grn.length);
+        ImageProcess imp = new ImageProcess();
+        imp.computeMean(grn);
+    
+    }
+    
+}
