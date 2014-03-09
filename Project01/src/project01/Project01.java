@@ -23,6 +23,7 @@ public class Project01 {
         System.out.println(grn.length);
         ImageProcess imp = new ImageProcess();
         imp.computeMean(grn);
+        imp.displayHistogram();
     
     }
     
