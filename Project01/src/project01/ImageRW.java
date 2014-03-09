@@ -3,12 +3,12 @@ package project01;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
+import java.util.List;
 import javax.imageio.ImageIO;
 
 public class ImageRW {
 
-    /*------------------------------------------------------------------------------------------------------*/
+    /*--------------------------------------------------------------------------------------------*/
     public int[][] ImageRead(String filename) {
 
         try {
@@ -36,8 +36,28 @@ public class ImageRW {
             return null;
         }
     }
+    /*--------------------------------------------------------------------------------------------*/
+    public void readGreen(String filename, List<Double> data) {
 
-    /*------------------------------------------------------------------------------------------------------*/
+        try {
+
+            File infile = new File(filename);
+            BufferedImage bi = ImageIO.read(infile);
+
+            int grn[][] = new int[bi.getHeight()][bi.getWidth()];
+
+            for (int i = 0; i < grn.length; ++i) {
+                for (int j = 0; j < grn[i].length; ++j) {                                      
+                    grn[i][j] = bi.getRGB(j, i) >> 8 & 0xFF;
+                    data.add((double)grn[i][j]);
+                }
+            }
+
+        } catch (IOException e) {
+            System.out.println("image I/O error");
+        }
+    }
+    /*--------------------------------------------------------------------------------------------*/
     public void ImageWrite(int img[][], String filename) {
 
         try {
@@ -59,6 +79,6 @@ public class ImageRW {
             System.out.println(e);
         }
     }
-    /*------------------------------------------------------------------------------------------------------*/
+    /*--------------------------------------------------------------------------------------------*/
 
 }

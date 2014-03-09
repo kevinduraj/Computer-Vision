@@ -21,13 +21,15 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Project 01");
         
-        ImageRW image = new ImageRW();
-        int grn[][] = image.ImageRead("src/image/Week_01_Homework.png");
-        System.out.println(grn.length);
-        ImageProcess imp = new ImageProcess();
-        
         List<Double> data = new ArrayList<>();
-        imp.loadData(grn, data);
+        ImageRW image = new ImageRW();
+        image.readGreen("src/image/Week_01_Homework.png", data);
+        
+        //System.out.println(grn.length);
+        //ImageProcess imp = new ImageProcess();
+        
+
+        //imp.loadData(grn, data);
         
         /*------------------- Histogram -------------------------*/
         Statistics stat = new Statistics(data);
