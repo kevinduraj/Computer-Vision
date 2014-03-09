@@ -13,7 +13,10 @@ ImageJ: http://rsbweb.nih.gov/ij/developer/source/index.html
 ------------------------------------------------------------------------------------------------------------*/
 package project01;
 
-public class Project01 {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Main {
 
     public static void main(String[] args) {
         System.out.println("Project 01");
@@ -22,9 +25,23 @@ public class Project01 {
         int grn[][] = image.ImageRead("src/image/Week_01_Homework.png");
         System.out.println(grn.length);
         ImageProcess imp = new ImageProcess();
-        imp.computeMean(grn);
-        imp.displayHistogram();
+        
+        List<Double> data = new ArrayList<>();
+        imp.loadData(grn, data);
+        
+        /*------------------- Histogram -------------------------*/
+        Statistics stat = new Statistics(data);
+        System.out.format("\nMean     : %.3f", stat.getMean());
+        System.out.format("\nVariance : %.3f", stat.getVariance());
+        System.out.format("\nStdDev   : %.3f", stat.getStdDev());
+        
+        double max = stat.getMean() + stat.getStdDev();
+        double min = stat.getMean() - stat.getStdDev();
+        
+        System.out.println("\n------------------------");
+        System.out.format("Max : %.3f", max);
+        System.out.format("\nMin : %.3f\n", min); 
+        /*-------------------------------------------------------*/
     
     }
-    
 }
