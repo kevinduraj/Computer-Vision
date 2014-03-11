@@ -34,7 +34,24 @@ public class Statistics {
         }
         return temp / size;
     }
-
+    /*----------------------------------------------------------------------*/
+    int getMin() {
+        
+        double min = 255;
+        for (double a : data) {
+            if(a < min) min=a;
+        }
+        return (int) min;
+    }
+    /*----------------------------------------------------------------------*/
+    int getMax() {
+        
+        double max = 0;
+        for (double a : data) {
+            if(a > max) max=a;
+        }
+        return (int) max;
+    }    
     /*----------------------------------------------------------------------*/
     double getStdDev() {
         return Math.sqrt(getVariance());

@@ -9,6 +9,8 @@ a. If the pixel value drops below 0, set that pixel value to 0
 a. If the pixel value drops below 0, set that pixel value to 0 
 7. Write the resultant image to an image file (BMP, PNG, other “standard” uncompressed format) 
 
+Written by: Kevin T. Duraj
+Reference:
 ImageJ: http://rsbweb.nih.gov/ij/developer/source/index.html
 --------------------------------------------------------------------------------------------------*/
 package project01;
@@ -34,11 +36,14 @@ public class Main {
         System.out.format("\nStdDev   : %.3f", stat.getStdDev());
                
         System.out.println("\n------------------------");
-        System.out.format("Max      : %.3f", stat.getMean() + stat.getStdDev());
-        System.out.format("\nMin      : %.3f\n", stat.getMean() - stat.getStdDev()); 
+        System.out.format("Max      : %3d", stat.getMax());
+        System.out.format("\nMin      : %3d\n", stat.getMin()); 
+        System.out.println("------------------------");
+
         /*-------------------------------------------------------*/
         
-        image.substractMean(grn, stat.getMean(), "src/image/SubstractMean.png");
+        image.substract(grn, stat.getMean(), "src/image/SubstractMean.png");
+        image.substract(grn, stat.getStdDev(), "src/image/SubstractStdDev.png");
     
     }
 }

@@ -43,15 +43,15 @@ public class ImageRW {
             File infile = new File(filename);
             BufferedImage bi = ImageIO.read(infile);
 
-            int red[][] = new int[bi.getHeight()][bi.getWidth()];
+            //int red[][] = new int[bi.getHeight()][bi.getWidth()];
             int grn[][] = new int[bi.getHeight()][bi.getWidth()];
-            int blu[][] = new int[bi.getHeight()][bi.getWidth()];
+            //int blu[][] = new int[bi.getHeight()][bi.getWidth()];
 
             for (int i = 0; i < grn.length; ++i) {
                 for (int j = 0; j < grn[i].length; ++j) {                                      
-                    red[i][j] = bi.getRGB(j, i) >> 16 & 0xFF;
+                    //red[i][j] = bi.getRGB(j, i) >> 16 & 0xFF;
                     grn[i][j] = bi.getRGB(j, i) >> 8 & 0xFF;
-                    blu[i][j] = bi.getRGB(j, i) & 0xFF;
+                    //blu[i][j] = bi.getRGB(j, i) & 0xFF;
                     data.add((double)grn[i][j]);
                 }
             }
@@ -84,7 +84,7 @@ public class ImageRW {
         }
     }
     /*--------------------------------------------------------------------------------------------*/
-    public void substractMean(int img[][], Double mean, String filename) {
+    public void substract(int img[][], Double mean, String filename) {
 
         int val=0;
         System.out.println("Writting Image:\n" + filename);
@@ -100,7 +100,6 @@ public class ImageRW {
                     if( result < 0 ) val=0;
                     else val = result;
 
-                    //System.out.println("new=" + val);
                     int pixel = (val << 16) | (val << 8) | (val);
                     bi.setRGB(j, i, pixel);
                 }
