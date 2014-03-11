@@ -16,7 +16,6 @@ public class ImageRW {
             File infile = new File(filename);
             BufferedImage bi = ImageIO.read(infile);
 
-            // -- separate image into RGB components
             int red[][] = new int[bi.getHeight()][bi.getWidth()];
             int grn[][] = new int[bi.getHeight()][bi.getWidth()];
             int blu[][] = new int[bi.getHeight()][bi.getWidth()];
@@ -37,24 +36,30 @@ public class ImageRW {
         }
     }
     /*--------------------------------------------------------------------------------------------*/
-    public void readGreen(String filename, List<Double> data) {
+    public int[][]  readGreen(String filename, List<Double> data) {
 
         try {
 
             File infile = new File(filename);
             BufferedImage bi = ImageIO.read(infile);
 
+            int red[][] = new int[bi.getHeight()][bi.getWidth()];
             int grn[][] = new int[bi.getHeight()][bi.getWidth()];
+            int blu[][] = new int[bi.getHeight()][bi.getWidth()];
 
             for (int i = 0; i < grn.length; ++i) {
                 for (int j = 0; j < grn[i].length; ++j) {                                      
+                    red[i][j] = bi.getRGB(j, i) >> 16 & 0xFF;
                     grn[i][j] = bi.getRGB(j, i) >> 8 & 0xFF;
+                    blu[i][j] = bi.getRGB(j, i) & 0xFF;
                     data.add((double)grn[i][j]);
                 }
             }
+            return grn;
 
         } catch (IOException e) {
             System.out.println("image I/O error");
+            return null;
         }
     }
     /*--------------------------------------------------------------------------------------------*/
@@ -63,7 +68,6 @@ public class ImageRW {
         try {
             BufferedImage bi = new BufferedImage(img[0].length, img.length, BufferedImage.TYPE_INT_RGB);
 
-            // -- prepare output image
             for (int i = 0; i < bi.getHeight(); ++i) {
                 for (int j = 0; j < bi.getWidth(); ++j) {
                     int val = img[i][j];
@@ -72,7 +76,37 @@ public class ImageRW {
                 }
             }
 
-            // -- write output image
+            //--- Write output image
+            File outputfile = new File(filename);
+            ImageIO.write(bi, "png", outputfile);
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+    }
+    /*--------------------------------------------------------------------------------------------*/
+    public void substractMean(int img[][], Double mean, String filename) {
+
+        int val=0;
+        System.out.println("Writting Image:\n" + filename);
+        try {
+            BufferedImage bi = new BufferedImage(img[0].length, img.length, BufferedImage.TYPE_INT_RGB);
+
+            //--- Browse through image pixels
+            for (int i = 0; i < bi.getHeight(); ++i) {
+                for (int j = 0; j < bi.getWidth(); ++j) {
+                    
+                    //--- Substract mean from each pixel
+                    int result = (int) ((int)img[i][j]-mean);
+                    if( result < 0 ) val=0;
+                    else val = result;
+
+                    //System.out.println("new=" + val);
+                    int pixel = (val << 16) | (val << 8) | (val);
+                    bi.setRGB(j, i, pixel);
+                }
+            }
+
+            //--- Write output image
             File outputfile = new File(filename);
             ImageIO.write(bi, "png", outputfile);
         } catch (IOException e) {
