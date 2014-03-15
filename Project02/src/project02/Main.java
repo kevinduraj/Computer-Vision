@@ -9,7 +9,7 @@ public class Main {
         /*---------------- Loading Data -------------------------*/
         Histogram histogram = new Histogram();
         histogram.readHistogram("src/image2/Lenna.png");
-        histogram.setCutoff(10);
+        histogram.setCutoff(10.0);
         //histogram.displayHistogram(); 
         /*-------------------------------------------------------*/
         histogram.displayAll();

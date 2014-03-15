@@ -101,17 +101,12 @@ public class Histogram {
         
     }    
     /*--------------------------------------------------------------------------------------------*/
-    public void setCutoff(int percent) {
+    public void setCutoff(double percent) {
 
-        cutoff = (int) (totalPixels * 0.1);   
+        percent = percent / 100;
+        cutoff = (int) (totalPixels * percent);   
         cutoffHigh = totalPixels - cutoff;
     }
-    /*--------------------------------------------------------------------------------------------*/
-    public Integer getCutoff() {
-        if (cutoff == 0)
-            cutoff = (int) (totalPixels * 0.1);   
-        return cutoff;
-    }    
     /*--------------------------------------------------------------------------------------------*/
     public void displayAll() {
 
