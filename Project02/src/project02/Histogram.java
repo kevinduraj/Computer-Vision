@@ -18,9 +18,8 @@ public class Histogram {
     private Integer cutoff;
     private Integer cutoffHigh;
 
-    private Integer first;
-    private Integer last;
-    private Integer points;
+    Integer first;
+    Integer last;
 
 
     /*--------------------------------------------------------------------------------------------*/
@@ -30,11 +29,10 @@ public class Histogram {
         cutoffHigh = 0;
         first = 0;
         last = 0;
-        points = 0;
     }
     /*--------------------------------------------------------------------------------------------*/
 
-    public void readHistogram(String filename) {
+    public Map<Integer, Integer> readHistogram(String filename) {
 
         try {
 
@@ -48,13 +46,22 @@ public class Histogram {
 
                     totalPixels++;
                     grn[i][j] = bi.getRGB(j, i) >> 8 & 0xFF;
-                    incrementSource(grn[i][j], 1);
+
+                    // incrementSource(grn[i][j], 1);
+                    int key = grn[i][j];
+                    int count = mapSource.containsKey(key) ? mapSource.get(key) : 0;
+                    count += 1;
+                    mapSource.put(key, count);
+
                 }
             }
 
         } catch (IOException e) {
             System.out.println(e + "image I/O error");
         }
+
+        return mapSource;
+
     }
     /*--------------------------------------------------------------------------------------------*/
 
@@ -75,10 +82,10 @@ public class Histogram {
     }
 
     /*----------------------------------------------------------------------------------------------
-       Cutoff Histogram 
-            set 10% to   0 close to 0 
-            set 10% to 255 close to 255
-    ----------------------------------------------------------------------------------------------*/
+     Cutoff Histogram 
+     set 10% to   0 close to 0 
+     set 10% to 255 close to 255
+     ----------------------------------------------------------------------------------------------*/
     private void cutoffHistogram() {
 
         int sum = 0;
@@ -89,15 +96,17 @@ public class Histogram {
 
             sum += value;
             if (sum < cutoff) {
-                
+
                 mapCutoff.put(key, 0);
-                first = key+1;             //---------- set first ----------//
-                
+                first = key + 1;             //---------- set first ----------//
+
             } else if (sum > cutoffHigh) {
-                
-                if(last==0) last = key-1;  //---------- set last  ----------//
+
+                if (last == 0) {
+                    last = key - 1;  //---------- set last  ----------//
+                }
                 mapCutoff.put(key, 255);
-                
+
             } else {
                 mapCutoff.put(key, value);
             }
@@ -106,17 +115,16 @@ public class Histogram {
     /*--------------------------------------------------------------------------------------------*/
 
     public void setStretch() {
-        
-        double increment = 255 / (last-first);    // 1.8613        
-        double counter=first;                     // 51
-        
+
+        double increment = 255 / (last - first);    // 1.8613        
+        double counter = first;                     // 51
+
         //mapStretch.put(0, first);
-        
-        for (int i=first; i<=last; i++) { 
-            
+        for (int i = first; i <= last; i++) {
+
             double res = (i - first) * 1.8613;
             //counter = counter + increment;
-            mapStretch.put((int)res, i);           
+            mapStretch.put((int) res, i);
         }
     }
     /*--------------------------------------------------------------------------------------------*/
@@ -128,12 +136,7 @@ public class Histogram {
         cutoffHigh = totalPixels - cutoff;
         cutoffHistogram();
         return mapCutoff;
-        
-    }
-    /*--------------------------------------------------------------------------------------------*/
 
-    public int lookup(int key) {
-        return mapCutoff.containsKey(key) ? mapCutoff.get(key) : 0;
     }
     /*--------------------------------------------------------------------------------------------*/
 
@@ -143,65 +146,13 @@ public class Histogram {
         System.out.println("Total Pixels : " + totalPixels);
         System.out.println("Cutoff       : " + cutoff);
         System.out.println("CutoffHigh   : " + cutoffHigh);
-        System.out.println("Lookup 187   : " + lookup(187));
         System.out.println("-------------------------------------");
         System.out.println("First        : " + first);
         System.out.println("Last         : " + last);
-        System.out.println("Points       : " + points);        
         System.out.println("-------------------------------------");
 
-    }    
-    /*--------------------------------------------------------------------------------------------*/
-    public int[][] ImageRead(String filename) {
-
-        try {
-
-            File infile = new File(filename);
-            BufferedImage bi = ImageIO.read(infile);
-
-            int red[][] = new int[bi.getHeight()][bi.getWidth()];
-            int grn[][] = new int[bi.getHeight()][bi.getWidth()];
-            int blu[][] = new int[bi.getHeight()][bi.getWidth()];
-
-            for (int i = 0; i < red.length; ++i) {
-                for (int j = 0; j < red[i].length; ++j) {
-                    
-                    red[i][j] = bi.getRGB(j, i) >> 16 & 0xFF;
-                    grn[i][j] = bi.getRGB(j, i) >> 8 & 0xFF;
-                    blu[i][j] = bi.getRGB(j, i) & 0xFF;
-                }
-            }
-
-            return grn;
-
-        } catch (IOException e) {
-            System.out.println("image I/O error");
-            return null;
-        }
     }   
-    /*--------------------------------------------------------------------------------------------*/
-    public void ImageWrite(int img[][], String filename) {
-
-        try {
-            BufferedImage bi = new BufferedImage(img[0].length, img.length, BufferedImage.TYPE_INT_RGB);
-
-            for (int i = 0; i < bi.getHeight(); ++i) {
-                for (int j = 0; j < bi.getWidth(); ++j) {
-                    
-                    int val = img[i][j];               
-                    if(lookup(val) == 0) val=0;                       
-                    
-                    int pixel = (val << 16) | (val << 8) | (val);
-                    bi.setRGB(j, i, pixel);
-                }
-            }
-
-            //--- Write output image
-            File outputfile = new File(filename);
-            ImageIO.write(bi, "png", outputfile);
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-    }    
-    /*--------------------------------------------------------------------------------------------*/       
 }
+/*
+   value = mapCutoff.containsKey(key) ? mapCutoff.get(key) : 0;
+*/
