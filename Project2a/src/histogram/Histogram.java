@@ -1,9 +1,8 @@
-package project02;
+package histogram;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.imageio.ImageIO;
@@ -83,7 +82,6 @@ public class Histogram {
 
     public int[] stretchMap(int first, int last) {
 
-        //Map<Integer, Integer> mapStretch = new TreeMap();
         int[] mapStretch = new int[256];
         
         double increment = (double) 253 / (last - first);    // 1.8540 = 254 / (188-51)     
@@ -92,9 +90,6 @@ public class Histogram {
         for (int oldKey = first; oldKey <= last; oldKey++) {
 
             double newKey = ((oldKey - first) * increment) + 1 ;   // 16.75 = (60-51) * 1.8613
-            //mapStretch.put((int) newKey, oldKey);
-            //mapStretch[(int)newKey] = oldKey;
-            System.out.println(oldKey + " " + newKey);
             mapStretch[oldKey] = (int) newKey;
         }
         return mapStretch;
@@ -114,16 +109,13 @@ public class Histogram {
         int sum = 0;
         int[] pixel = new int[256];
 
-        //for (Map.Entry<Integer, Integer> entry : mapSource.entrySet()) {
         for(int key=0; key<source.length; key++) {
             
-            //int key = entry.getKey();
             int value = source[key];
 
             sum += value;
             if (sum < cutoff) {
 
-                //mapCutoff.put(key, 0);
                 pixel[key] = 0;
                 first = key + 1;             //---------- set first ----------//
 
@@ -132,11 +124,9 @@ public class Histogram {
                 if (last == 0) {
                     last = key - 1;          //---------- set last  ----------//
                 }
-                //mapCutoff.put(key, 255);
                 pixel[key] = 255;
 
             } else {
-                //mapCutoff.put(key, value);
                 pixel[key] = value;
             }
         }
@@ -160,6 +150,3 @@ public class Histogram {
 
     }   
 }
-/*
-   value = mapCutoff.containsKey(key) ? mapCutoff.get(key) : 0;
-*/

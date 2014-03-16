@@ -1,4 +1,4 @@
-package project02;
+package histogram;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -60,35 +60,8 @@ public class ImageReadWrite {
 		}
 	}
     /*--------------------------------------------------------------------------------------------*/
-    void ImageWriteHistogram(int[][] img, int first, int last, String filename) {
-
-        try {
-            BufferedImage bi = new BufferedImage(img[0].length, img.length, BufferedImage.TYPE_INT_RGB);
-
-            for (int i = 0; i < bi.getHeight(); ++i) {
-                for (int j = 0; j < bi.getWidth(); ++j) {
-
-                    int val = img[i][j];
-                    //Lookup in Histogram
-                    //int histVal = cutoff.containsKey(val) ? cutoff.get(val) : 0;
-                    if(val < first)  val = 0;
-                    else if(val>last) val = 255;
-
-                    int pixel = (val << 16) | (val << 8) | (val);
-                    bi.setRGB(j, i, pixel);
-                }
-            }
-
-            //--- Write output image
-            File outputfile = new File(filename);
-            ImageIO.write(bi, "png", outputfile);
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-
-    }
-
-    void ImageWriteStretch(int[][] img, int first, int last, int[] lookup, String filename) {
+    void WriteStretchedImage(int[][] img, int first, int last, int[] lookup, String filename) {
+        
         try {
             BufferedImage bi = new BufferedImage(img[0].length, img.length, BufferedImage.TYPE_INT_RGB);
 
@@ -99,7 +72,11 @@ public class ImageReadWrite {
                     
                     if(val < first)  val = 0;
                     else if(val>last) val = 255;
-                    else val = lookup[val];
+                    else {
+                        if(lookup.length > 0) {
+                            val = lookup[val];
+                        }
+                    }
 
                     int pixel = (val << 16) | (val << 8) | (val);
                     bi.setRGB(j, i, pixel);
