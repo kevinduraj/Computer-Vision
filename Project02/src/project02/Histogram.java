@@ -74,37 +74,11 @@ public class Histogram {
 
     }
 
-    /*--------------------------------------------------------------------------------------------*/
-    public void displayHistogram() {
-
-        for (Map.Entry<Integer, Integer> entry : mapSource.entrySet()) {
-            Integer key = entry.getKey();
-            Integer value = entry.getValue();
-            System.out.println(key + " => " + value);
-        }
-    }
-    /*--------------------------------------------------------------------------------------------*/
-
-    public void displayCutoffHistogram() {
-
-        for (Map.Entry<Integer, Integer> entry : mapCutoff.entrySet()) {
-            Integer key = entry.getKey();
-            Integer value = entry.getValue();
-            System.out.println(key + " => " + value);
-        }
-    }
-    /*--------------------------------------------------------------------------------------------*/
-
-    public void displayStretch() {
-
-        for (Map.Entry<Integer, Integer> entry : mapStretch.entrySet()) {
-            Integer key = entry.getKey();
-            Integer value = entry.getValue();
-            System.out.println(key + " => " + value);
-        }
-    }    
-    /*--------------------------------------------------------------------------------------------*/
-
+    /*----------------------------------------------------------------------------------------------
+       Cutoff Histogram 
+            set 10% to   0 close to 0 
+            set 10% to 255 close to 255
+    ----------------------------------------------------------------------------------------------*/
     private void cutoffHistogram() {
 
         int sum = 0;
@@ -117,11 +91,11 @@ public class Histogram {
             if (sum < cutoff) {
                 
                 mapCutoff.put(key, 0);
-                first = key+1;   // set first
+                first = key+1;             //---------- set first ----------//
                 
             } else if (sum > cutoffHigh) {
                 
-                if(last==0) last = key-1;  // set last
+                if(last==0) last = key-1;  //---------- set last  ----------//
                 mapCutoff.put(key, 255);
                 
             } else {
@@ -133,7 +107,7 @@ public class Histogram {
 
     public void setStretch() {
         
-        double increment = 255 / (last-first); // 1.8613        
+        double increment = 255 / (last-first);    // 1.8613        
         double counter=first;                     // 51
         
         //mapStretch.put(0, first);
@@ -147,13 +121,14 @@ public class Histogram {
     }
     /*--------------------------------------------------------------------------------------------*/
 
-    public void setCutoff(double percent) {
+    public Map<Integer, Integer> setCutoff(double percent) {
 
         percent = percent / 100;
         cutoff = (int) (totalPixels * percent);
         cutoffHigh = totalPixels - cutoff;
-        
         cutoffHistogram();
+        return mapCutoff;
+        
     }
     /*--------------------------------------------------------------------------------------------*/
 

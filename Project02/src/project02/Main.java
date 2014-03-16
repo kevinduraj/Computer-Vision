@@ -1,5 +1,7 @@
 package project02;
 
+import java.util.Map;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -17,10 +19,11 @@ public class Main {
         /*---------------- Loading Data -------------------------*/
         Histogram hist = new Histogram();
         hist.readHistogram("src/image2/Lenna.png");
-        hist.setCutoff(10.0); 
-        /*-------------------------------------------------------*/
-        hist.displayCutoffHistogram();
+        Map<Integer, Integer> cutoff = hist.setCutoff(10.0); 
+        
+        displayMap(cutoff);
         hist.displayAll();
+        
         /*-------------------------------------------------------*/
         //hist.setStretch();
         //hist.displayStretch();
@@ -28,4 +31,15 @@ public class Main {
         //int grn[][] = hist.ImageRead("src/image2/Lenna.png");
         //hist.ImageWrite(grn, "src/image2/LennaCutoff.png");
     }
+    
+    /*--------------------------------------------------------------------------------------------*/
+    private static void displayMap(Map<Integer, Integer> map) {
+
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            Integer key = entry.getKey();
+            Integer value = entry.getValue();
+            System.out.println(key + " => " + value);
+        }
+    }
+    /*--------------------------------------------------------------------------------------------*/    
 }
