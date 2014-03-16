@@ -3,12 +3,14 @@ package enlarging;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 public class ImageReflection {
 
     /*--------------------------------------------------------------------------------------------*/
-    public  int[][] createImage(int width, int height) {
+    public int[][] createImage(int width, int height) {
 
         int gray[][] = new int[width][height];
         int counter = 0;
@@ -22,32 +24,64 @@ public class ImageReflection {
         return gray;
     }
     /*--------------------------------------------------------------------------------------------*/
-    public  int[][] reflection(int img[][], int size) {
 
-        int gray[][] = new int[img.length+size*2][img[0].length+size*2];
+    public int[][] reflection(int img[][], int size) {
 
-        for (int i = size; i < gray.length-size; ++i) {
-            for (int j = size; j < gray[i].length-size; ++j) {
+        int gray[][] = new int[img.length + size * 2][img[0].length + size * 2];
 
-                gray[i][j] = img[i-size][j-size];
+        for (int i = size; i < gray.length - size; ++i) {
+            for (int j = size; j < gray[i].length - size; ++j) {
+
+                gray[i][j] = img[i - size][j - size];
             }
         }
         return gray;
     }
-    
+
     /*--------------------------------------------------------------------------------------------*/
     public void displayImage(int img[][]) {
 
-            for(int i=0; i<img.length; i++) {
-                for(int j=0; j<img[i].length; j++) {
-                    
-                   System.out.format("%3d ", img[i][j]);
-                   
-                }
-                System.out.println();
+        for (int i = 0; i < img.length; i++) {
+            for (int j = 0; j < img[i].length; j++) {
+
+                System.out.format("%3d ", img[i][j]);
+
             }
             System.out.println();
-    }    
+        }
+        System.out.println();
+    }
+    /*--------------------------------------------------------------------------------------------*/
+
+    public void displayBorder(int img[][]) {
+
+        for (int i = 0; i < img.length; i++) {
+
+            for (int j = 0; j < img[i].length; j++) {
+
+                // horizontal
+                if (i == 0) {
+                    System.out.format("%3d ", img[i][j]);
+                } // vertical;
+                else if ((i != 0) && (j == 0)) {
+                    System.out.format("%3d ", img[i][j]);
+                } else if (i == img.length - 1) {
+                    System.out.format("%3d ", img[i][j]);
+                } else if ((i > 0) && (j == 9)) {
+                    System.out.format("%3d ", img[i][j]);
+                }
+                else {
+                    System.out.format("%3d ", 0);
+                }
+                
+            }
+
+            System.out.println();
+
+        }
+        System.out.println();
+    }
+
     /*--------------------------------------------------------------------------------------------*/
     public void writeImage(int img[][], String filename) {
 
@@ -67,6 +101,6 @@ public class ImageReflection {
         } catch (IOException e) {
             System.out.println(e);
         }
-    }    
-    /*--------------------------------------------------------------------------------------------*/    
+    }
+    /*--------------------------------------------------------------------------------------------*/
 }

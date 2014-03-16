@@ -19,8 +19,8 @@ public class Enlarging {
         ref.writeImage(gray1, "src/image/Temp1.png");
         
         int[][] gray2 = ref.reflection(gray1, 1);
-        ref.displayImage(gray2);
-        ref.writeImage(gray2, "src/image/Temp2.png");        
+        ref.displayBorder(gray1);
+        //ref.writeImage(gray2, "src/image/Temp2.png");        
         
     }    
     
@@ -32,7 +32,7 @@ public class Enlarging {
         try {
             image1 = ImageIO.read(new File("src/image/Lenna.png"));
             
-            ZoomIn zoom = new ZoomIn();
+            ImageZoomIn zoom = new ImageZoomIn();
             image2 = zoom.enlarge(image1, 2);
             zoom.WriteImage(image2, "src/image/Lenna1.jpg");
 
