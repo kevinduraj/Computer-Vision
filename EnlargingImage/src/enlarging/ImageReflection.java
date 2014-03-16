@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 public class ImageReflection {
 
     /*--------------------------------------------------------------------------------------------*/
-    public  int[][] createImage(int width, int height, int value) {
+    public  int[][] createImage(int width, int height) {
 
         int gray[][] = new int[width][height];
         int counter = 0;
@@ -16,13 +16,25 @@ public class ImageReflection {
         for (int i = 0; i < gray.length; ++i) {
             for (int j = 0; j < gray[i].length; ++j) {
 
-                counter++;
-                if(value==0) gray[i][j] = 0;
-                else gray[i][j] = counter++;
+                gray[i][j] = counter++;
             }
         }
         return gray;
     }
+    /*--------------------------------------------------------------------------------------------*/
+    public  int[][] reflection(int img[][], int size) {
+
+        int gray[][] = new int[img.length+size*2][img[0].length+size*2];
+
+        for (int i = size; i < gray.length-size; ++i) {
+            for (int j = size; j < gray[i].length-size; ++j) {
+
+                gray[i][j] = img[i-size][j-size];
+            }
+        }
+        return gray;
+    }
+    
     /*--------------------------------------------------------------------------------------------*/
     public void displayImage(int img[][]) {
 

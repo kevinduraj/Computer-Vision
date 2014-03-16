@@ -14,11 +14,11 @@ public class Enlarging {
         int lenght=10;
         
         ImageReflection ref = new ImageReflection();
-        int[][] gray1 = ref.createImage(width,lenght, 1);
+        int[][] gray1 = ref.createImage(width,lenght);
         ref.displayImage(gray1);
         ref.writeImage(gray1, "src/image/Temp1.png");
         
-        int[][] gray2 = ref.createImage(width+1,lenght+1, 0);
+        int[][] gray2 = ref.reflection(gray1, 1);
         ref.displayImage(gray2);
         ref.writeImage(gray2, "src/image/Temp2.png");        
         
