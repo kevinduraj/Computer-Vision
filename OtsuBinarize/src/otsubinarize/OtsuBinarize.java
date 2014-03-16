@@ -11,7 +11,9 @@ public class OtsuBinarize {
  
     private static BufferedImage original, grayscale, binarized;
  
-    /*--------------------------------------------------------------------------------------------*/
+    /*--------------------------------------------------------------------------------------------
+                        Perform an Otsu optimal threshold operation
+     --------------------------------------------------------------------------------------------*/
     public static void main(String[] args) throws IOException {
  
         File original_f = new File("src/image/Lenna.png");    //new File(args[0]+".jpg");
@@ -136,8 +138,9 @@ public class OtsuBinarize {
         int newPixel;
  
         int threshold = otsuTreshold(original);
+        System.out.println("\nOtsu threshold : " + threshold );
  
-        BufferedImage binarized = new BufferedImage(original.getWidth(), original.getHeight(), original.getType());
+        BufferedImage bin = new BufferedImage(original.getWidth(), original.getHeight(), original.getType());
  
         for(int i=0; i<original.getWidth(); i++) {
             for(int j=0; j<original.getHeight(); j++) {
@@ -152,12 +155,12 @@ public class OtsuBinarize {
                     newPixel = 0;
                 }
                 newPixel = colorToRGB(alpha, newPixel, newPixel, newPixel);
-                binarized.setRGB(i, j, newPixel); 
+                bin.setRGB(i, j, newPixel); 
  
             }
         }
  
-        return binarized;
+        return bin;
  
     }
     /*---------------------------------------------------------------------------------------------
