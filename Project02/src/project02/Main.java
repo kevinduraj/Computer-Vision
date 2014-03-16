@@ -4,19 +4,24 @@ import java.util.Map;
 
 public class Main {
 
+    /*--------------------------------------------------------------------------------------------*/
     public static void main(String[] args) {
 
         System.out.println("Project 02 - Histogram");
         //MakeCutoffImage();
         
         Histogram hist = new Histogram();
-        Map<Integer, Integer> mapHist = hist.readHistogram("src/image2/LennaCutoff.png");
-        displayMap(mapHist);
+        //Map<Integer, Integer> mapHist = hist.readHistogram("src/image2/LennaCutoff.png");
+        //displayMap(mapHist);
+        
+        Map<Integer, Integer> mapStretched = hist.stretchMap(51, 188);
+        displayMap(mapStretched);
              
     }
-
+    /*--------------------------------------------------------------------------------------------*/
+    
     private static void MakeCutoffImage() {
-        /*---------------- Loading Data -------------------------*/
+        
         Histogram hist = new Histogram();
         Map<Integer, Integer> mapHist = hist.readHistogram("src/image2/Lenna.png");
         displayMap(mapHist);

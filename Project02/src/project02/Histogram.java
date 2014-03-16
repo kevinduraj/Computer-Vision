@@ -12,7 +12,6 @@ public class Histogram {
 
     private Map<Integer, Integer> mapSource = new TreeMap();
     private Map<Integer, Integer> mapCutoff = new TreeMap();
-    private Map<Integer, Integer> mapStretch = new TreeMap();
 
     private Integer totalPixels;
     private Integer cutoff;
@@ -114,18 +113,19 @@ public class Histogram {
     }
     /*--------------------------------------------------------------------------------------------*/
 
-    public void setStretch() {
+    public Map<Integer, Integer> stretchMap(int first, int last) {
 
-        double increment = 255 / (last - first);    // 1.8613        
-        double counter = first;                     // 51
+        Map<Integer, Integer> mapStretch = new TreeMap();
+        
+        double increment = (double) 253 / (last - first);    // 1.8540 = 254 / (188-51)     
+        System.out.format("Increment = %.4f", increment);
+        
+        for (int oldKey = first; oldKey <= last; oldKey++) {
 
-        //mapStretch.put(0, first);
-        for (int i = first; i <= last; i++) {
-
-            double res = (i - first) * 1.8613;
-            //counter = counter + increment;
-            mapStretch.put((int) res, i);
+            double newKey = ((oldKey - first) * increment) + 1 ;   // 16.75 = (60-51) * 1.8613
+            mapStretch.put((int) newKey, oldKey);
         }
+        return mapStretch;
     }
     /*--------------------------------------------------------------------------------------------*/
 

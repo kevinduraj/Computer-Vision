@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 
 public class ImageReadWrite {
 	
-	public static int[][] ImageRead(String filename) {
+	public  int[][] ImageRead(String filename) {
 
 		try {
 
@@ -37,7 +37,7 @@ public class ImageReadWrite {
 		}
 	}
 
-	public static void ImageWrite(int img[][], String filename)
+	public void ImageWrite(int img[][], String filename)
 	{
 		try {
 			BufferedImage bi = new BufferedImage(img[0].length, img.length, BufferedImage.TYPE_INT_RGB);
