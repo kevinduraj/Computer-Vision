@@ -1,5 +1,6 @@
 package preprocessing;
 
+import filter.MedianFilter;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.IOException;
@@ -18,6 +19,13 @@ public class Main {
         //CutOffImage1();
         //Binarization2();        
         //OtsuBinarization3();    
+        
+        ImageReadWrite img = new ImageReadWrite();
+        int[][] green = img.ImageRead("src/image/Lenna.png");
+        
+        MedianFilter median = new MedianFilter();
+        int[][] gray = median.process(green);
+        img.ImageWrite(gray, "src/image/LennaMedian.png");
         
     }
     

@@ -1,4 +1,4 @@
-package project01;
+package test;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
