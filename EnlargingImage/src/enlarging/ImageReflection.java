@@ -52,7 +52,6 @@ public class ImageReflection {
         System.out.println();
     }
     /*--------------------------------------------------------------------------------------------*/
-
     public void displayBorder(int img[][]) {
 
         for (int i = 0; i < img.length; i++) {
@@ -67,13 +66,12 @@ public class ImageReflection {
                     System.out.format("%3d ", img[i][j]);
                 } else if (i == img.length - 1) {
                     System.out.format("%3d ", img[i][j]);
-                } else if ((i > 0) && (j == 9)) {
+                } else if ((i > 0) && (j == img.length-1)) {
                     System.out.format("%3d ", img[i][j]);
                 }
                 else {
-                    System.out.format("%3d ", 0);
-                }
-                
+                    System.out.format("%3s ", "x");
+                }                
             }
 
             System.out.println();
@@ -81,6 +79,95 @@ public class ImageReflection {
         }
         System.out.println();
     }
+   /*--------------------------------------------------------------------------------------------*/
+    public int[][] makeReflection(int img[][]) {
+
+        for (int i = 0; i < img.length; i++) {
+
+            for (int j = 0; j < img[i].length; j++) {
+
+                //---- Top ---//
+                if (i == 0) {
+                    int a = i+2;
+                    if(a>9) a=9;
+                    System.out.format("%3d ",img[a][j]);
+                    img[i][j] = img[a][j];
+                    
+                } //--- Left ----//
+                else if ((i != 0) && (j == 0)) {
+                    int a = j+2;
+                    System.out.format("%3d ", img[i][a]);
+                    img[i][j] = img[i][a];
+                    
+                } //--- Bottom -----//
+                else if (i == img.length - 1) {
+                    int a = i-2;
+                    System.out.format("%3d ", img[a][j]);
+                    img[i][j] = img[a][j];
+                    
+                } //---- Right ----//
+                else if ((i > 0) && (j == img.length-1)) {
+                    int a = j-2;
+                    System.out.format("%3d ", img[i][a]);
+                    img[i][j] = img[i][a];
+                    
+                }
+                //----- inside ----//
+                else {
+                    //System.out.format("%3s ", "x");
+                    System.out.format("%3d ", img[i][j]);
+                }
+            }
+
+            System.out.println();
+
+        }
+        System.out.println();
+        
+        return img;
+    }    
+    
+    /*--------------------------------------------------------------------------------------------*/
+    public void displayReflection(int img[][]) {
+
+        for (int i = 0; i < img.length; i++) {
+
+            for (int j = 0; j < img[i].length; j++) {
+
+                //---- Top ---//
+                if (i == 0) {
+                    int a = i+2;
+                    if(a>9) a=9;
+                    System.out.format("%3d ",img[a][j]);
+                    
+                } //--- Left ----//
+                else if ((i != 0) && (j == 0)) {
+                    int a = j+2;
+                    System.out.format("%3d ", img[i][a]);
+                    
+                } //--- Bottom -----//
+                else if (i == img.length - 1) {
+                    int a = i-2;
+                    System.out.format("%3d ", img[a][j]);
+                    
+                } //---- Right ----//
+                else if ((i > 0) && (j == img.length-1)) {
+                    int a = j-2;
+                    System.out.format("%3d ", img[i][a]);
+                    
+                }
+                //----- inside ----//
+                else {
+                    //System.out.format("%3s ", "x");
+                    System.out.format("%3d ", img[i][j]);
+                }
+            }
+
+            System.out.println();
+
+        }
+        System.out.println();
+    }    
 
     /*--------------------------------------------------------------------------------------------*/
     public void writeImage(int img[][], String filename) {

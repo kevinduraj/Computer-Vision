@@ -19,7 +19,8 @@ public class Enlarging {
         ref.writeImage(gray1, "src/image/Temp1.png");
         
         int[][] gray2 = ref.reflection(gray1, 1);
-        ref.displayBorder(gray1);
+        int[][] gray3 = ref.makeReflection(gray2);
+        ref.displayImage(gray3);
         //ref.writeImage(gray2, "src/image/Temp2.png");        
         
     }    
