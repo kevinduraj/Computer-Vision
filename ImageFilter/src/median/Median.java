@@ -5,41 +5,42 @@ import imagefilter.ImageReadWrite;
 public class Median {
 
     int nrows, ncols;
-    int in_img[][], out_img[][];
+    int image1[][], image2[][];
 
-    public void process() {
-        
-        nrows = 512;
-        ncols = 512;
+    public void process(String fileIn, String fileOut) {
         
         ImageReadWrite io = new ImageReadWrite();
-        in_img = io.ImageRead("src/image/Lenna.png");
-        out_img = new int[nrows][ncols];
+        image1 = io.ImageRead(fileIn);
+        
+        nrows = image1.length; 
+        ncols = image1[1].length;
+               
+        image2 = new int[nrows][ncols];
 
-        // Median filtering
+        //--- Browse Source Image Matrix----//
         for (int i = 0; i < nrows; i++) {
             for (int j = 0; j < ncols; j++) {
-                out_img[i][j] = median(i, j);
+                image2[i][j] = median(i, j);
             }
         }
-
         
-        io.ImageWrite("src/image/Lenna4.png", out_img);                
+        io.ImageWrite(fileOut, image2);                
     }
 
     public int median(int i, int j) {
         int m, n, count, t[], tmp;
 
+        //--- Browse Kernel Matrix ---//
         t = new int[9];
         for (m = i - 1, count = 0; m <= i + 1; m++) {
             for (n = j - 1; n <= j + 1; n++) {
                 if (m >= 0 && m < nrows && n >= 0 && n < ncols) {
-                    t[count++] = in_img[m][n];
+                    t[count++] = image1[m][n];
                 }
             }
         }
 
-        //--- Bubble Sort ---//
+        //--- Apply Bubble Sort ---//
         for (m = 0; m < count - 1; m++) {
             for (n = m + 1; n < count; n++) {
                 if (t[m] < t[n]) {
@@ -51,5 +52,4 @@ public class Median {
         }
         return t[count / 2];
     }
-
-} // end class MedianFilter
+} 

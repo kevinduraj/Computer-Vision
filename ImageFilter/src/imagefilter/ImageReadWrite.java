@@ -51,7 +51,7 @@ public class ImageReadWrite {
             File outputfile = new File(filename);
             ImageIO.write(bi, "png", outputfile);
         } catch (IOException e) {
-
+            System.out.println(e);
         }
     }
 } 
