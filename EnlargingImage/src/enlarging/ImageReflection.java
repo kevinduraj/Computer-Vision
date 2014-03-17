@@ -80,49 +80,53 @@ public class ImageReflection {
         System.out.println();
     }
    /*--------------------------------------------------------------------------------------------*/
-    public int[][] makeReflection(int img[][]) {
+    public int[][] makeReflection(int img[][], int kernel) {
 
         for (int i = 0; i < img.length; i++) {
 
             for (int j = 0; j < img[i].length; j++) {
 
-                //---- Top ---//
+                //---- Top ----//
                 if (i == 0) {
                     int a = i+2;
                     if(a>9) a=9;
-                    System.out.format("%3d ",img[a][j]);
                     img[i][j] = img[a][j];
                     
-                } //--- Left ----//
+                } //---- Left ----//
                 else if ((i != 0) && (j == 0)) {
                     int a = j+2;
-                    System.out.format("%3d ", img[i][a]);
                     img[i][j] = img[i][a];
                     
-                } //--- Bottom -----//
+                } //---- Bottom -----//
                 else if (i == img.length - 1) {
                     int a = i-2;
-                    System.out.format("%3d ", img[a][j]);
                     img[i][j] = img[a][j];
                     
                 } //---- Right ----//
                 else if ((i > 0) && (j == img.length-1)) {
                     int a = j-2;
-                    System.out.format("%3d ", img[i][a]);
                     img[i][j] = img[i][a];
                     
                 }
                 //----- inside ----//
                 else {
                     //System.out.format("%3s ", "x");
-                    System.out.format("%3d ", img[i][j]);
+                    //System.out.format("%3d ", img[i][j]);
                 }
             }
-
-            System.out.println();
-
         }
-        System.out.println();
+        
+        //--- LeftTop Corner ---//
+        img[0][0] = img[kernel-1][kernel-1];
+        
+        //---- LeftBottom Corner ---//
+        img[img.length-1][0] = img[img.length-1][kernel-1];
+
+        //--- RightTop Corner ---//
+        img[0][img.length-1] = img[kernel-1][img.length-1];
+
+        //--- RightBottom Corner ---//
+        img[img.length-1][img.length-1] = img[img.length-3][img.length-3];   
         
         return img;
     }    
