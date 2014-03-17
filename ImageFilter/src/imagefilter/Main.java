@@ -21,7 +21,7 @@ public class Main {
         int[][] gray2 = ref.reflection(gray1, 1);
         int[][] gray3 = ref.makeReflection(gray2, 3);
         //ref.displayImage(gray3);
-        ref.writeImage(gray2, "src/image/LenaReflection.png");
+        ref.writeImage(gray2, "src/image/LennaReflectionPadding.png");
     }   
     /*--------------------------------------------------------------------------------------------
     Program 4b.)
@@ -29,7 +29,7 @@ public class Main {
       --------------------------------------------------------------------------------------------*/
     private static void ProcessMedianFilter() {
         Median median = new Median();
-        median.process("src/image/LenaReflection.png", "src/image/LennaMedian.png");
+        median.process("src/image/LennaReflectionPadding.png", "src/image/LennaMedian.png");
     }   
     /*--------------------------------------------------------------------------------------------*/
 }
