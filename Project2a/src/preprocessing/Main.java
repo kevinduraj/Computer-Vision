@@ -1,11 +1,11 @@
 package preprocessing;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
+import java.awt.image.RenderedImage;
+import java.awt.image.renderable.ParameterBlock;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import javax.imageio.ImageIO;
+import javax.media.jai.JAI;
+import javax.media.jai.PlanarImage;
+import javax.media.jai.operator.MedianFilterDescriptor;
 
 public class Main {
 
@@ -17,10 +17,25 @@ public class Main {
     public static void main(String[] args) throws IOException {
         //CutOffImage1();
         //Binarization2();        
-        OtsuBinarization3();           
-             
+        //OtsuBinarization3();    
+        
     }
+    
+    /*--------------------------------------------------------------------------------------------
+        https://github.com/Ela88/ImageProcessing/blob/master/code%20raf/ImageProcessingPipe/fhv/pipes_and_filters/utils/ImageFilters.java
+    ---------------------------------------------------------------------------------------------*/
+    public static PlanarImage medianFilter(PlanarImage image) {
+        
+        ParameterBlock pb = new ParameterBlock();
+        pb.addSource(image);
+        pb.add(MedianFilterDescriptor.MEDIAN_MASK_SQUARE);
+        pb.add(3);
 
+        RenderedImage dst = JAI.create("MedianFilter", pb);
+        PlanarImage finalImg = (PlanarImage) dst;
+        return finalImg;
+    }
+        
     /*---------------------------------------------------------------------------------------------
     Program 1.)
         Perform a histogram stretch operation 
@@ -73,10 +88,9 @@ public class Main {
         
         OtsuBinarize otsu = new OtsuBinarize("src/image/Lenna.png");
         String filename = otsu.run();
-        System.out.println("Otsu output" + filename);
+        if(DEBUG==2) System.out.println("Otsu output" + filename);
     }
 
-    
     
     /*---------------------------------------------------------------------------------------------
                              Display Integer Histogram Array
