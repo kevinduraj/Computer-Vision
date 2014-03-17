@@ -10,9 +10,12 @@ public class Enlarging {
     /*--------------------------------------------------------------------------------------------*/
     public static void main(String[] args) {
         //ZoomOnImage();
-        int width=10;
-        int lenght=10;
+        Reflection(10, 10);        
         
+    }
+
+    /*--------------------------------------------------------------------------------------------*/
+    private static void Reflection(int width, int lenght) {
         ImageReflection ref = new ImageReflection();
         int[][] gray1 = ref.createImage(width,lenght);
         ref.displayImage(gray1);
@@ -21,8 +24,7 @@ public class Enlarging {
         int[][] gray2 = ref.reflection(gray1, 1);
         int[][] gray3 = ref.makeReflection(gray2, 3);
         ref.displayImage(gray3);
-        ref.writeImage(gray2, "src/image/Temp2.png");        
-        
+        ref.writeImage(gray2, "src/image/Temp2.png");
     }    
     
     /*--------------------------------------------------------------------------------------------*/    
