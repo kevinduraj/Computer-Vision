@@ -1,4 +1,4 @@
-package histogram;
+package preprocessing;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;

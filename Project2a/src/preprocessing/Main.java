@@ -1,4 +1,4 @@
-package histogram;
+package preprocessing;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -17,7 +17,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         //CutOffImage1();
         //Binarization2();        
-        OtsuBinarization();           
+        OtsuBinarization3();           
              
     }
 
@@ -69,8 +69,7 @@ public class Main {
         using the Otsu optimal threshold algorithm to compute the threshold
       --------------------------------------------------------------------------------------------*/
     
-    private static void OtsuBinarization() throws IOException {
-
+    private static void OtsuBinarization3() throws IOException {
         
         OtsuBinarize otsu = new OtsuBinarize("src/image/Lenna.png");
         String filename = otsu.run();
