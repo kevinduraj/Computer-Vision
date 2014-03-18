@@ -1,12 +1,15 @@
 package imagefilter;
 import median.Median;
+import median.Outlier;
 
 public class Main {
 
     public static void main(String[] args) {
         
-        Reflection();
-        ProcessMedianFilter();        
+        //Reflection();
+        //ProcessMedianFilter();
+        Outlier outlier = new Outlier();
+        outlier.process("src/image/LennaReflectionPadding.png", "src/image/LennaOutlier.png");        
     }
 
     /*--------------------------------------------------------------------------------------------
