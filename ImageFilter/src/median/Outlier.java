@@ -21,11 +21,7 @@ public class Outlier {
         //--- Browse Source Image Matrix----//
         for (int i = 0; i < nrows; i++) {
             for (int j = 0; j < ncols; j++) {
-                int outlier = median(i, j);
-
-                if (outlier == 0) {
-                    image2[i][j] = image1[i][j];
-                }
+                image2[i][j] = median(i, j);
             }
         }
         io.ImageWrite(fileOut, image2);
@@ -46,22 +42,27 @@ public class Outlier {
             }
         }
 
-        //--- Apply Bubble Sort ---//
+        int sum=0;
+        //--- Add All Kernel Values ---//
         for (m = 0; m < count - 1; m++) {
-            for (n = m + 1; n < count; n++) {
-                if (kernel[m] < kernel[n]) {
-                    tmp = kernel[m];
-                    kernel[m] = kernel[n];
-                    kernel[n] = tmp;
-                }
-            }
+            sum += kernel[m];
         }
 
-        int average = kernel[count / 2];
-
-        if ((image1[i][j] - average) > 50) {
-
+        /*------------------------------------------------------------------------------------------        
+        For every pixel I(i, j)
+            • Compute the average pixel value of the neighborhood, n(i, j)
+            • If |I(i, j)- n(i, j)| > threshold then replace I(i, j) with the neighborhood average
+            • Result will be sensitive to the selected threshold        
+        ------------------------------------------------------------------------------------------*/
+        double average = Math.abs(sum/9);
+        double neighborhood = (sum-image1[i][j]) / 8;
+        int result = image1[i][j] - (int)average;
+        
+        if (result > 50) {
             totalOutliers++;
+            System.out.format("IMG=%3d ", image1[i][j]);            
+            System.out.format("AVG=%.1f ", average);
+            System.out.format("RES=%3d ", result);
             System.out.format("0=%3d ", kernel[0]);
             System.out.format("1=%3d ", kernel[1]);
             System.out.format("2=%3d ", kernel[2]);
@@ -72,9 +73,11 @@ public class Outlier {
             System.out.format("7=%3d ", kernel[7]);
             System.out.format("8=%3d ", kernel[8]);
             System.out.println();
-            return kernel[count / 2];
+            
+            return (int)neighborhood;
+            
         } else {
-            return 0;
+            return image1[i][j];
         }
     }
 }
