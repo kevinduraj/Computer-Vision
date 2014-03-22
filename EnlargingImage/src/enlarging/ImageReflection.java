@@ -52,6 +52,7 @@ public class ImageReflection {
         System.out.println();
     }
     /*--------------------------------------------------------------------------------------------*/
+
     public void displayBorder(int img[][]) {
 
         for (int i = 0; i < img.length; i++) {
@@ -66,12 +67,11 @@ public class ImageReflection {
                     System.out.format("%3d ", img[i][j]);
                 } else if (i == img.length - 1) {
                     System.out.format("%3d ", img[i][j]);
-                } else if ((i > 0) && (j == img.length-1)) {
+                } else if ((i > 0) && (j == img.length - 1)) {
                     System.out.format("%3d ", img[i][j]);
-                }
-                else {
+                } else {
                     System.out.format("%3s ", "x");
-                }                
+                }
             }
 
             System.out.println();
@@ -79,58 +79,136 @@ public class ImageReflection {
         }
         System.out.println();
     }
-   /*--------------------------------------------------------------------------------------------*/
-    public int[][] makeReflection(int img[][], int kernel) {
+    /*--------------------------------------------------------------------------------------------*/
 
-        for (int i = 0; i < img.length; i++) {
+    int[][] flipLeft(int[][] source, int kernel) {
 
-            for (int j = 0; j < img[i].length; j++) {
+        int size = kernel / 2;
+        int img[][] = new int[source.length + size][source[0].length + size];
+
+        //for (int i = 0; i < source.length; i++) {
+        for (int i = source.length - 1; i >= 0; i--) {
+            //for(int j = source[0].length - 1; j>=0; j--) {
+            for (int j = 0; j < source[i].length; j++) {
+                System.out.format("%3d ", source[i][j]);
+            }
+            System.out.println();
+        }
+
+        return img;
+    }
+    /*--------------------------------------------------------------------------------------------*/
+
+    int[][] flipOver(int[][] source, int kernel) {
+
+        int size = kernel / 2;
+        int img[][] = new int[source.length + size][source[0].length + size];
+
+        for (int i = source.length - 1; i >= 0; i--) {
+            for (int j = source[0].length - 1; j >= 0; j--) {
+                System.out.format("%3d ", source[i][j]);
+            }
+            System.out.println();
+        }
+
+        return img;
+    }
+
+    /*--------------------------------------------------------------------------------------------*/
+    private int[][] fillLarger(int src[][], int size) {
+
+        int[][] img = new int[src.length + size][src[0].length + size];
+
+        for (int i = 0; i < src.length; i++) {
+            for (int j = 0; j < src[i].length; j++) {
+                img[i + size / 2][j + size / 2] = src[i][j];
+            }
+        }
+
+        return img;
+    }
+    /*--------------------------------------------------------------------------------------------*/
+
+    public int[][] reflection(int src[][], int vert[][], int horiz[][], int size) {
+        //size = 4
+        int oneSide = size / 2; // =  2
+        int height1 = src.length;
+        int width = src[0].length;
+
+        int[][] img = fillLarger(src, size);
+        int height2 = img.length;
+        int width2 = img[0].length;
+        
+        //--- Left Side
+        for (int i = size - 1; i <= height1 + 1; i++) { // horizontal
+            for (int j = 0; j <= 1; j++) { // vertical
+                int res = 1 - j;
+                img[i][j] = horiz[i - oneSide][width - res - 1];
+            }
+        }
+
+        //--- Right Side
+        for (int i = 12; i < 14; i++) { // horizontal
+            for (int j = 2; j <= height1 + 1; j++) { // vertical                
+                img[j][i] = horiz[j - oneSide][i - 12];
+            }
+        }
+
+        return img;
+    }
+    /*--------------------------------------------------------------------------------------------*/
+
+    public int[][] makeReflection(int[][] src, int kernel) {
+
+        int size = kernel / 2;
+        for (int i = 0; i < src.length; i++) {
+
+            for (int j = 0; j < src[i].length; j++) {
 
                 //---- Top ----//
                 if (i == 0) {
-                    int a = i+2;
-                    if(a>9) a=9;
-                    img[i][j] = img[a][j];
-                    
+                    int a = i + size;
+                    if (a > src.length) {
+                        a = src.length;
+                    }
+                    src[i][j] = src[a][j];
+
                 } //---- Left ----//
                 else if ((i != 0) && (j == 0)) {
-                    int a = j+2;
-                    img[i][j] = img[i][a];
-                    
+                    int a = j + size;
+                    src[i][j] = src[i][a];
+
                 } //---- Bottom -----//
-                else if (i == img.length - 1) {
-                    int a = i-2;
-                    img[i][j] = img[a][j];
-                    
+                else if (i == src.length - 1) {
+                    int a = i - size;
+                    src[i][j] = src[a][j];
+
                 } //---- Right ----//
-                else if ((i > 0) && (j == img.length-1)) {
-                    int a = j-2;
-                    img[i][j] = img[i][a];
-                    
-                }
-                //----- inside ----//
+                else if ((i > 0) && (j == src.length - 1)) {
+                    int a = j - size;
+                    src[i][j] = src[i][a];
+
+                } //----- inside ----//
                 else {
                     //System.out.format("%3s ", "x");
                     //System.out.format("%3d ", img[i][j]);
                 }
             }
         }
-        
+
         //--- LeftTop Corner ---//
-        img[0][0] = img[kernel-1][kernel-1];
-        
+        src[0][0] = src[size][size];
+
         //---- LeftBottom Corner ---//
-        img[img.length-1][0] = img[img.length-1][kernel-1];
+        src[src.length - 1][0] = src[src.length - 1][size];
 
         //--- RightTop Corner ---//
-        img[0][img.length-1] = img[kernel-1][img.length-1];
-
+        src[0][src.length - 1] = src[size][src.length - 1];
         //--- RightBottom Corner ---//
-        img[img.length-1][img.length-1] = img[img.length-3][img.length-3];   
-        
-        return img;
-    }    
-    
+        src[src.length - 1][src.length - 1] = src[src.length - size][src.length - size];
+        return src;
+    }
+
     /*--------------------------------------------------------------------------------------------*/
     public void displayReflection(int img[][]) {
 
@@ -140,27 +218,28 @@ public class ImageReflection {
 
                 //---- Top ---//
                 if (i == 0) {
-                    int a = i+2;
-                    if(a>9) a=9;
-                    System.out.format("%3d ",img[a][j]);
-                    
+                    int a = i + 2;
+                    if (a > 9) {
+                        a = 9;
+                    }
+                    System.out.format("%3d ", img[a][j]);
+
                 } //--- Left ----//
                 else if ((i != 0) && (j == 0)) {
-                    int a = j+2;
+                    int a = j + 2;
                     System.out.format("%3d ", img[i][a]);
-                    
+
                 } //--- Bottom -----//
                 else if (i == img.length - 1) {
-                    int a = i-2;
+                    int a = i - 2;
                     System.out.format("%3d ", img[a][j]);
-                    
+
                 } //---- Right ----//
-                else if ((i > 0) && (j == img.length-1)) {
-                    int a = j-2;
+                else if ((i > 0) && (j == img.length - 1)) {
+                    int a = j - 2;
                     System.out.format("%3d ", img[i][a]);
-                    
-                }
-                //----- inside ----//
+
+                } //----- inside ----//
                 else {
                     //System.out.format("%3s ", "x");
                     System.out.format("%3d ", img[i][j]);
@@ -171,9 +250,38 @@ public class ImageReflection {
 
         }
         System.out.println();
-    }    
-
+    }
     /*--------------------------------------------------------------------------------------------*/
+
+    public int[][] ImageRead(String filename) {
+
+        try {
+
+            // -- read input image
+            File infile = new File(filename);
+            BufferedImage bi = ImageIO.read(infile);
+
+            // -- separate image into RGB components
+            int red[][] = new int[bi.getHeight()][bi.getWidth()];
+            int grn[][] = new int[bi.getHeight()][bi.getWidth()];
+            int blu[][] = new int[bi.getHeight()][bi.getWidth()];
+            for (int i = 0; i < red.length; ++i) {
+                for (int j = 0; j < red[i].length; ++j) {
+                    red[i][j] = bi.getRGB(j, i) >> 16 & 0xFF;
+                    grn[i][j] = bi.getRGB(j, i) >> 8 & 0xFF;
+                    blu[i][j] = bi.getRGB(j, i) & 0xFF;
+                }
+            }
+
+            return grn;
+
+        } catch (IOException e) {
+            System.out.println("image I/O error");
+            return null;
+        }
+    }
+    /*--------------------------------------------------------------------------------------------*/
+
     public void writeImage(int img[][], String filename) {
 
         try {
@@ -194,4 +302,5 @@ public class ImageReflection {
         }
     }
     /*--------------------------------------------------------------------------------------------*/
+
 }
