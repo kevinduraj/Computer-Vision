@@ -15,7 +15,7 @@ public class Main {
     /*--------------------------------------------------------------------------------------------*/
     public static void main(String[] args) throws IOException {
         
-        Reflection(10, 10);
+        Reflection(14, 14);
 
         System.out.println("Original");
         displayValues(filename);
@@ -43,7 +43,7 @@ public class Main {
         int[][]src = ref.ImageRead(filename);
         int[][]vert = ref.ImageRead("src/image/vertical.png");
         int[][]horiz = ref.ImageRead("src/image/horizontal.png");
-        int[][] larger = ref.reflection(src, vert, horiz, 8);
+        int[][] larger = ref.reflection(src, vert, horiz, 10);
         
         System.out.println("Reflection Image");
         ref.displayImage(larger);

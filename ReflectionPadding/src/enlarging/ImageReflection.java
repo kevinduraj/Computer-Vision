@@ -129,19 +129,19 @@ public class ImageReflection {
     }
     /*--------------------------------------------------------------------------------------------*/
 
-    public int[][] reflection(int src[][], int vert[][], int horiz[][], int size) {
-        //size = 4
-        int half = size / 2; // =  2
+    public int[][] reflection(int src[][], int vert[][], int horiz[][], int kernel) {
+
+        int half = kernel / 2; 
         int height1 = src.length;
         int width1 = src[0].length;
 
-        int[][] img = fillLarger(src, size);
+        int[][] img = fillLarger(src, kernel);
         int height2 = img.length;
         int width2 = img[0].length;
 
         //--- Left Side ----//
-        for (int i = half; i < height1 + half; i++) { // horizontal
-            for (int c = 1, j = half-1; j >= 0; c++, j--) { // vertical
+        for (int i = half; i < height1 + half; i++) { // vertical
+            for (int c = 1, j = half-1; j >= 0; c++, j--) { // horizontal
                 img[i][j] = horiz[i - half][width1 - c];
             }
         }
@@ -154,73 +154,38 @@ public class ImageReflection {
         }
 
         //--- Top Side ---//
-        for (int i = 0; i < half; i++) { // horizontal
-            for (int j = half; j < width1 + half; j++) { // vertical
+        for (int i = 0; i < half; i++) { // vertical
+            for (int j = half; j < width1 + half; j++) { // horizontal
                 img[i][j] = vert[(width1 - half) + i][j - half];
             }
         }
         //--- Bottom Side ----//
-        for (int i = height2 - half; i < height2; i++) { // horizontal
-            for (int j = 0; j < width1; j++) { // vertical
+        for (int i = height2 - half; i < height2; i++) { // vertical
+            for (int j = 0; j < width1; j++) { // horizontal
                 img[i][half + j] = vert[i - (height2 - half)][j];
             }
         }
+        
+        //---- Left Top Corner ----//
+        for(int c=1, x=0; x<half; c++, x++) 
+                img[x][x] = src[half-c][half-c];
 
+        //---- Right Bottom Corner ---//
+        for(int c=half, x=height2-1; x>=height2-half; c--, x--) 
+                img[x][x] = src[height1-c][width1-c];
+        
+        //---- RightTop Corner ---//
+        for(int c=half, i=0, j=width2-1; i<half; c--, i++, j--) {
+                img[i][j] = src[c-1][width1-c];         
+        }
+        
+        //---- Left Bottom Corner ---//
+        for(int c=half, i=height2-1, j=0; j<half; c--, i--, j++) {
+                img[i][j] = src[height1-c][c-1];         
+        }
+        
         return img;
     }
-    /*--------------------------------------------------------------------------------------------*/
-
-    public int[][] makeReflection(int[][] src, int kernel) {
-
-        int size = kernel / 2;
-        for (int i = 0; i < src.length; i++) {
-
-            for (int j = 0; j < src[i].length; j++) {
-
-                //---- Top ----//
-                if (i == 0) {
-                    int a = i + size;
-                    if (a > src.length) {
-                        a = src.length;
-                    }
-                    src[i][j] = src[a][j];
-
-                } //---- Left ----//
-                else if ((i != 0) && (j == 0)) {
-                    int a = j + size;
-                    src[i][j] = src[i][a];
-
-                } //---- Bottom -----//
-                else if (i == src.length - 1) {
-                    int a = i - size;
-                    src[i][j] = src[a][j];
-
-                } //---- Right ----//
-                else if ((i > 0) && (j == src.length - 1)) {
-                    int a = j - size;
-                    src[i][j] = src[i][a];
-
-                } //----- inside ----//
-                else {
-                    //System.out.format("%3s ", "x");
-                    //System.out.format("%3d ", img[i][j]);
-                }
-            }
-        }
-
-        //--- LeftTop Corner ---//
-        src[0][0] = src[size][size];
-
-        //---- LeftBottom Corner ---//
-        src[src.length - 1][0] = src[src.length - 1][size];
-
-        //--- RightTop Corner ---//
-        src[0][src.length - 1] = src[size][src.length - 1];
-        //--- RightBottom Corner ---//
-        src[src.length - 1][src.length - 1] = src[src.length - size][src.length - size];
-        return src;
-    }
-
     /*--------------------------------------------------------------------------------------------*/
     public void displayReflection(int img[][]) {
 
