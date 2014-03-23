@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 public class Main {
 
     static BufferedImage image;
-    static String filename = "src/image/image10x10.png";
+    static String filename = "src/image/Lenna.png";
         
     /*--------------------------------------------------------------------------------------------*/
     public static void main(String[] args) throws IOException {
@@ -18,15 +18,18 @@ public class Main {
         Reflection(14, 14);
 
         System.out.println("Original");
-        displayValues(filename);
+        //displayValues(filename);
                       
         System.out.println("Vertical");
-        displayValues("src/image/vertical.png");
+        //displayValues("src/image/vertical.png");
         
         System.out.println("Horizonal");
-        displayValues("src/image/horizontal.png");
+        //displayValues("src/image/horizontal.png");
         
-        //Rotate180(filename);
+        System.out.println("Reflection Image");
+        //displayValues("src/image/ReflectionPadded.png");
+        
+        Rotate180(filename);
         
     }
     /*--------------------------------------------------------------------------------------------*/
@@ -34,8 +37,8 @@ public class Main {
         
 
         ImageReflection ref = new ImageReflection();
-        int[][] gray1 = ref.createImage(width, lenght);
-        ref.writeImage(gray1, filename);
+        //int[][] gray1 = ref.createImage(width, lenght);
+        //ref.writeImage(gray1, filename);
         
         FlipVerticaly(filename);
         FlipHorizontaly(filename);
@@ -43,15 +46,9 @@ public class Main {
         int[][]src = ref.ImageRead(filename);
         int[][]vert = ref.ImageRead("src/image/vertical.png");
         int[][]horiz = ref.ImageRead("src/image/horizontal.png");
-        int[][] larger = ref.reflection(src, vert, horiz, 10);
+        int[][]larger = ref.reflection(src, vert, horiz, 10);
         
-        System.out.println("Reflection Image");
-        ref.displayImage(larger);
-        
-        //int[][] gray2 = ref.reflection(gray1, 1);
-        //int[][] gray3 = ref.makeReflection(gray2, 3);
-        //ref.displayImage(gray3);
-        //ref.writeImage(gray2, "src/image/Temp2.png");
+        ref.writeImage(larger, "src/image/ReflectionPadded.png");
         //int[][] gray4 = ref.flipLeft(gray1, 5);        
     }
     /*--------------------------------------------------------------------------------------------*/
