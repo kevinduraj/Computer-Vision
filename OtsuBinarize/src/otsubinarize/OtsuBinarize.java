@@ -16,8 +16,8 @@ public class OtsuBinarize {
      --------------------------------------------------------------------------------------------*/
     public static void main(String[] args) throws IOException {
  
-        File original_f = new File("src/image/Lenna.png");    //new File(args[0]+".jpg");
-        String output_f = "src/image/LennaOtsuBin.png"; //args[0]+"_bin";
+        File original_f = new File("src/image/Miami.png");    //new File(args[0]+".jpg");
+        String output_f = "src/image/MiamiOtsuBin.png"; //args[0]+"_bin";
         original = ImageIO.read(original_f);
         grayscale = toGray(original);
         binarized = binarize(grayscale);
