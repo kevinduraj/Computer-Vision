@@ -7,8 +7,8 @@ import javax.imageio.ImageIO;
 
 public class Main {
 
-    private static final int padding_x = 101;
-    private static final int padding_y = 101;
+    private static final int padding_x = 201;
+    private static final int padding_y = 201;
     
     public static void main(String[] args) throws IOException {
 

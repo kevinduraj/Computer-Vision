@@ -91,7 +91,7 @@ public class Reflection {
         return oimage;
     }
     /*--------------------------------------------------------------------------------------------*/   
-    public static int[][] ScaleDown(int[][] paddedImg, int x_size, int y_size) {
+    public int[][] ScaleDown(int[][] paddedImg, int x_size, int y_size) {
         
         int height=paddedImg.length-y_size+1;
         int width=paddedImg[0].length-x_size+1;
