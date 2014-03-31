@@ -14,8 +14,12 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         System.out.println("Processing Pipeline");
-        int[][] array = ProcessPrecentile();
-        ProcessReflection(array, 7, 7);
+        int[][] imgPrecentile = ProcessPrecentile();
+        int[][] imgReflection = ProcessReflection(imgPrecentile, 7, 7);
+        
+        MedianFilter median = new MedianFilter();
+        int[][] imgMedian = median.process(imgReflection);        
+        ImageWrite("src/image/Median.png", imgMedian);
         
     }
     /*--------------------------------------------------------------------------------------------*/    
@@ -29,7 +33,7 @@ public class Main {
         
         //int[][] simage = ref.ScaleDown(oimage,padding_x,padding_y);
         //ImageWrite(simage, "src/image/scaledown.png");        
-    }
+    } 
     /*--------------------------------------------------------------------------------------------*/    
     private static int[][] ProcessPrecentile() throws IOException {
         
