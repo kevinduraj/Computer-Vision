@@ -3,13 +3,9 @@ package processingpipeline;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
-import java.util.TreeMap;
 import javax.imageio.ImageIO;
 
 public class Percentile {
-    private Map<Integer, Integer> mapSource = new TreeMap();
-    private Map<Integer, Integer> mapCutoff = new TreeMap();
 
     private Integer totalPixels;
     private Integer cutoff;
@@ -17,20 +13,21 @@ public class Percentile {
 
     Integer first;
     Integer last;
-    
+
     /*--------------------------------------------------------------------------------------------*/
-    public Percentile () {
+    public Percentile() {
         totalPixels = 0;
         cutoff = 0;
         cutoffHigh = 0;
         first = 0;
-        last = 0;        
+        last = 0;
     }
     /*--------------------------------------------------------------------------------------------*/
+
     public int[] readHistogram(String filename) {
 
         int pixel[] = new int[256];
-        
+
         try {
 
             File infile = new File(filename);
@@ -44,10 +41,10 @@ public class Percentile {
                     totalPixels++;
                     grn[i][j] = bi.getRGB(j, i) >> 8 & 0xFF;
                     int key = grn[i][j];
-                    
+
                     //--- increment pixel ---//                  
                     pixel[key] += 1;
-                   
+
                 }
             }
 
@@ -56,8 +53,8 @@ public class Percentile {
         }
 
         return pixel;
-    }    
-    
+    }
+
     /*----------------------------------------------------------------------------------------------
      Cutoff Histogram 
      set 10% to   0 close to 0 
@@ -68,12 +65,12 @@ public class Percentile {
         percent = percent / 100;
         cutoff = (int) (totalPixels * percent);
         cutoffHigh = totalPixels - cutoff;
-     
+
         int sum = 0;
         int[] pixel = new int[256];
 
-        for(int key=0; key<source.length; key++) {
-            
+        for (int key = 0; key < source.length; key++) {
+
             int value = source[key];
 
             sum += value;
@@ -93,59 +90,55 @@ public class Percentile {
                 pixel[key] = value;
             }
         }
-        
-        
+
         return pixel;
 
     }
     /*--------------------------------------------------------------------------------------------*/
+
     public int[] stretchMap(int first, int last) {
 
         int[] mapStretch = new int[256];
-        
+
         double increment = (double) 253 / (last - first);    // 1.8540 = 254 / (188-51)     
         //System.out.format("--- Increment = %.4f ---\n", increment);
-        
+
         for (int oldKey = first; oldKey <= last; oldKey++) {
 
-            double newKey = ((oldKey - first) * increment) + 1 ;   // 16.75 = (60-51) * 1.8613
+            double newKey = ((oldKey - first) * increment) + 1;   // 16.75 = (60-51) * 1.8613
             mapStretch[oldKey] = (int) newKey;
         }
         return mapStretch;
-    }    
+    }
     /*--------------------------------------------------------------------------------------------*/
 
-    void WriteStretchedImage(int[][] img, int first, int last, int[] lookup, String filename) {
+    public void WriteStretchedImage(int[][] img, int first, int last, int[] lookup, String filename) throws IOException {
 
-        try {
-            BufferedImage bi = new BufferedImage(img[0].length, img.length, BufferedImage.TYPE_INT_RGB);
+        BufferedImage bi = new BufferedImage(img[0].length, img.length, BufferedImage.TYPE_INT_RGB);
 
-            for (int i = 0; i < bi.getHeight(); ++i) {
-                for (int j = 0; j < bi.getWidth(); ++j) {
+        for (int i = 0; i < bi.getHeight(); ++i) {
+            for (int j = 0; j < bi.getWidth(); ++j) {
 
-                    int val = img[i][j];
+                int val = img[i][j];
 
-                    if (val < first) {
-                        val = 0;
-                    } else if (val > last) {
-                        val = 255;
-                    } else {
-                        if (lookup.length > 0) {
-                            val = lookup[val];
-                        }
+                if (val < first) {
+                    val = 0;
+                } else if (val > last) {
+                    val = 255;
+                } else {
+                    if (lookup.length > 0) {
+                        val = lookup[val];
                     }
-
-                    int pixel = (val << 16) | (val << 8) | (val);
-                    bi.setRGB(j, i, pixel);
                 }
-            }
 
-            File outputfile = new File(filename);
-            ImageIO.write(bi, "png", outputfile);
-        } catch (IOException e) {
-            System.out.println(e);
+                int pixel = (val << 16) | (val << 8) | (val);
+                bi.setRGB(j, i, pixel);
+            }
         }
 
-    }    
-    /*--------------------------------------------------------------------------------------------*/    
+        File outputfile = new File(filename);
+        ImageIO.write(bi, "png", outputfile);
+
+    }
+    /*--------------------------------------------------------------------------------------------*/
 }
