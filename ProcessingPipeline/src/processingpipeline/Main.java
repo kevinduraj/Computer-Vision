@@ -19,10 +19,10 @@ public class Main {
         /*------------------- Percentile -----------------------*/
         int[][] imgPrecentile = ProcessPrecentile();
         
-        Reflection ref = new Reflection();        
-        int[][] imgReflection = ref.conv(imgPrecentile, padding_x, padding_y);  
+        //Reflection ref = new Reflection();        
+        //int[][] imgReflection = ref.conv(imgPrecentile, padding_x, padding_y);  
         //ImageWrite("src/image/reflection.png", imgReflection);
-        
+        int[][] imgReflection = ImageRead(sInput);
         /*------------------ Median Filter ---------------------*/
         MedianFilter median = new MedianFilter();
         int[][] imgMedian = median.process(imgReflection);        
