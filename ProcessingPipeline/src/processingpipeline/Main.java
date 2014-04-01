@@ -1,7 +1,6 @@
 package processingpipeline;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.ConvolveOp;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -9,6 +8,8 @@ import javax.imageio.ImageIO;
 public class Main {
 
     private static final String sInput = "src/image/Lenna.png";
+    private static final int padding_x = 7; // Must be odd number
+    private static final int padding_y = 7; // Must be odd number
    
     /*--------------------------------------------------------------------------------------------*/        
     public static void main(String[] args) throws IOException {
@@ -19,7 +20,7 @@ public class Main {
         int[][] imgPrecentile = ProcessPrecentile();
         
         Reflection ref = new Reflection();        
-        int[][] imgReflection = ref.conv(imgPrecentile, 7, 7);  // must be odd number                       
+        int[][] imgReflection = ref.conv(imgPrecentile, padding_x, padding_y);  
         //ImageWrite("src/image/reflection.png", imgReflection);
         
         /*------------------ Median Filter ---------------------*/
@@ -39,7 +40,12 @@ public class Main {
         ImageWrite( "src/image/SobelMagnitute.png", sobel.Magnitute);
         ImageWrite( "src/image/SobelDirection.png", sobel.Direction);
         
-        
+        /*------------------ Otsu Binarize ----------------------*/
+        OtsuBinarize otsu = new OtsuBinarize("src/image/SobelMagnitute.png");
+        otsu.run();        
+        File file = new File("src/image/OtsuBinarize" + otsu.treshold + ".png");
+        ImageIO.write(otsu.binarized, "png", file);
+                
         /*---------- Scaledown Remove Reflection Padding -------*/
         //int[][] simage = ref.ScaleDown(oimage,padding_x,padding_y);
         //ImageWrite(simage, "src/image/scaledown.png");       
@@ -117,6 +123,6 @@ public class Main {
 
             File outputfile = new File(filename);
             ImageIO.write(bi, "png", outputfile);
-    }    
+    }
     /*--------------------------------------------------------------------------------------------*/    
 }
