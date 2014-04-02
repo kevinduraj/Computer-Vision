@@ -7,7 +7,7 @@ import javax.imageio.ImageIO;
 
 public class Main {
 
-    private static final String sInput = "src/image/Lenna.png";
+    private static final String sInput = "src/image/A_Lenna.png";
     private static final int padding_x = 7; // Must be odd number
     private static final int padding_y = 7; // Must be odd number
    
@@ -16,19 +16,19 @@ public class Main {
 
         System.out.println("Processing Pipeline");
         
-        /*------------------- Percentile -----------------------*/
+        /*-------------------- Percentile -----------------------*/
         int[][] imgPrecentile = ProcessPrecentile();
         
-        //Reflection ref = new Reflection();        
-        //int[][] imgReflection = ref.conv(imgPrecentile, padding_x, padding_y);  
-        //ImageWrite("src/image/reflection.png", imgReflection);
-        int[][] imgReflection = ImageRead(sInput);
-        /*------------------ Median Filter ---------------------*/
+        Reflection ref = new Reflection();        
+        int[][] imgReflection = ref.conv(imgPrecentile, padding_x, padding_y);  
+        ImageWrite("src/image/reflection.png", imgReflection);
+           
+        /*------------------- Median Filter ---------------------*/
         MedianFilter median = new MedianFilter();
         int[][] imgMedian = median.process(imgReflection);        
-        //ImageWrite("src/image/Median.png", imgMedian);
+        ImageWrite("src/image/Median.png", imgMedian);
         
-        /*------------------ Gausian 2D ------------------------*/
+        /*------------------- Gausian 2D ------------------------*/
         Gaussian2D g2d = new Gaussian2D();
         float[][] kernel = g2d.kernel(1.6f, 15, false);
         int[][] imgGaussian = g2d.convolve(imgMedian, kernel);        
@@ -37,18 +37,19 @@ public class Main {
         /*---------------- Sobel Edge Detection -----------------*/
         Sobel sobel = new Sobel();
         sobel.process("src/image/Gaussian.png");
-        ImageWrite( "src/image/SobelMagnitute.png", sobel.Magnitute);
-        ImageWrite( "src/image/SobelDirection.png", sobel.Direction);
+        
+        /*---------- Scaledown Remove Reflection Padding --------*/
+        int[][] temp = ScaleDown(sobel.Magnitute ,padding_x,padding_y);
+        ImageWrite( "src/image/SobelMagnitute.png", temp);        
+        temp = ScaleDown(sobel.Direction ,padding_x,padding_y);
+        ImageWrite( "src/image/SobelDirection.png", temp);
         
         /*------------------ Otsu Binarize ----------------------*/
         OtsuBinarize otsu = new OtsuBinarize("src/image/SobelMagnitute.png");
         otsu.run();        
         File file = new File("src/image/OtsuBinarize" + otsu.treshold + ".png");
         ImageIO.write(otsu.binarized, "png", file);
-                
-        /*---------- Scaledown Remove Reflection Padding -------*/
-        //int[][] simage = ref.ScaleDown(oimage,padding_x,padding_y);
-        //ImageWrite(simage, "src/image/scaledown.png");       
+                        
     }
     /*--------------------------------------------------------------------------------------------*/    
     private static int[][] ProcessPrecentile() throws IOException {
@@ -123,6 +124,26 @@ public class Main {
 
             File outputfile = new File(filename);
             ImageIO.write(bi, "png", outputfile);
+    }
+    /*--------------------------------------------------------------------------------------------*/    
+    public static int[][] ScaleDown(double[][] paddedImg, int x_size, int y_size) {
+        
+        int height=paddedImg.length-y_size+1;
+        int width=paddedImg[0].length-x_size+1;
+        
+        int half_y=y_size/2;
+        int half_x=x_size/2;
+        
+        int[][] scaledDownImg = new int[height][width];
+        
+        for(int i=0; i<512; i++) {
+            for(int j=0; j<512; j++) {                                
+                scaledDownImg[i][j] = (int) paddedImg[half_y+i][half_x+j];
+            }
+        }
+        
+        return scaledDownImg;
+        
     }
     /*--------------------------------------------------------------------------------------------*/    
 }
