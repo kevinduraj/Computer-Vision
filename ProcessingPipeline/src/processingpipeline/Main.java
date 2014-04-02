@@ -7,10 +7,14 @@ import javax.imageio.ImageIO;
 
 public class Main {
 
-    private static final String sInput = "src/image/A_Victoria.png";
-    private static final int padding_x = 7; // Must be odd number
-    private static final int padding_y = 7; // Must be odd number
-   
+    private static final String sInput = "src/image/A_Lenna.png";
+    private static final int padding_x = 7;     // Must be odd number
+    private static final int padding_y = 7;     // Must be odd number
+    private static final int kernelSize = 15;   // Kernel size 
+    private static final float sigma = 1.6f;
+    private static int treshold = 0;
+    private static String sOutput = "src/image/SobelTreshhold" + treshold + ".png";   
+    
     /*--------------------------------------------------------------------------------------------*/        
     public static void main(String[] args) throws IOException {
 
@@ -30,7 +34,7 @@ public class Main {
         
         /*------------------- Gausian 2D ------------------------*/
         Gaussian2D g2d = new Gaussian2D();
-        float[][] kernel = g2d.kernel(1.6f, 15, false);
+        float[][] kernel = g2d.kernel(sigma, kernelSize, false);
         int[][] imgGaussian = g2d.convolve(imgMedian, kernel);        
         ImageWrite("src/image/Gaussian.png", imgGaussian);
                 
@@ -40,16 +44,33 @@ public class Main {
         
         /*---------- Scaledown Remove Reflection Padding --------*/
         int[][] temp = ScaleDown(sobel.Magnitute ,padding_x,padding_y);
-        ImageWrite( "src/image/SobelMagnitute.png", temp);        
+        ImageWrite( "src/image/SobelMagnitute.png", temp);                  
         temp = ScaleDown(sobel.Direction ,padding_x,padding_y);
         ImageWrite( "src/image/SobelDirection.png", temp);
         
         /*------------------ Otsu Binarize ----------------------*/
         OtsuBinarize otsu = new OtsuBinarize("src/image/SobelMagnitute.png");
         otsu.run();        
-        File file = new File("src/image/OtsuBinarize" + otsu.treshold + ".png");
+        sOutput = "src/image/SobelTreshhold" + otsu.treshold + ".png";   
+        File file = new File(sOutput);
         ImageIO.write(otsu.binarized, "png", file);
-                        
+        
+        
+        /*--------------------- Statistics ----------------------*/
+        Statistics stat1 = new Statistics("src/image/SobelMagnitute.png");
+        System.out.format("\n1.) src/image/SobelMagnitute.png"  
+                  + "\nSobel Magnitide - Image Output Mean = %.3f\n\n"
+                  , stat1.getMean());        
+
+        Statistics stat2 = new Statistics("src/image/SobelDirection.png");
+        System.out.format("\n2.) src/image/SobelDirection.png"  
+                  + "\nSobel Direction - Image Output Mean = %.3f\n\n"
+                  , stat2.getMean());        
+
+        Statistics stat3 = new Statistics(sOutput);
+        System.out.format("\n3.) " + sOutput  
+                  + "\n Sobel with Otsu Treshold = " + otsu.treshold 
+                  + " - Image Output Mean = %.3f\n\n\n", stat3.getMean());                
     }
     /*--------------------------------------------------------------------------------------------*/    
     private static int[][] ProcessPrecentile() throws IOException {
