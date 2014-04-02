@@ -4,7 +4,7 @@ public class Reflection {
 
     /*--------------------------------------------------------------------------------------------*/
 
-    public int[][] conv(int[][] iimage, int x_size, int y_size) {
+    public int[][] convolve(int[][] iimage, int x_size, int y_size) {
 
         int i, j, lines, samples;
         int padded_lines, padded_samples;

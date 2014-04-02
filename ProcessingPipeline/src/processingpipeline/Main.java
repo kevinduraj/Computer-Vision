@@ -20,7 +20,7 @@ public class Main {
         int[][] imgPrecentile = ProcessPrecentile();
         
         Reflection ref = new Reflection();        
-        int[][] imgReflection = ref.conv(imgPrecentile, padding_x, padding_y);  
+        int[][] imgReflection = ref.convolve(imgPrecentile, padding_x, padding_y);  
         ImageWrite("src/image/reflection.png", imgReflection);
            
         /*------------------- Median Filter ---------------------*/
