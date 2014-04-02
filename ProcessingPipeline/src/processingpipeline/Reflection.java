@@ -12,7 +12,7 @@ public class Reflection {
         int[][] oimage;
 
         lines = iimage.length;   //this.lines;
-        samples = iimage.length; //this.samples;
+        samples = iimage[0].length; //this.samples;
         
         padded_lines = lines + y_size - 1;
         padded_samples = samples + x_size - 1;

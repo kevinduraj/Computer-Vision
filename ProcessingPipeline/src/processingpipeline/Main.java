@@ -7,7 +7,7 @@ import javax.imageio.ImageIO;
 
 public class Main {
 
-    private static final String sInput = "src/image/A_Lenna.png";
+    private static final String sInput = "src/image/A_Victoria.png";
     private static final int padding_x = 7; // Must be odd number
     private static final int padding_y = 7; // Must be odd number
    
@@ -136,8 +136,8 @@ public class Main {
         
         int[][] scaledDownImg = new int[height][width];
         
-        for(int i=0; i<512; i++) {
-            for(int j=0; j<512; j++) {                                
+        for(int i=0; i<height; i++) {
+            for(int j=0; j<width; j++) {                                
                 scaledDownImg[i][j] = (int) paddedImg[half_y+i][half_x+j];
             }
         }
