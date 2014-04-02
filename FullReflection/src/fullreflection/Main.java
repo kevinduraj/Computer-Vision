@@ -7,19 +7,19 @@ import javax.imageio.ImageIO;
 
 public class Main {
 
-    private static final int padding_x = 201;
-    private static final int padding_y = 201;
+    private static final int padding_x = 801;
+    private static final int padding_y = 3;
     
     public static void main(String[] args) throws IOException {
 
-        int[][] iimage = ImageRead("src/image/Lenna.png");
+        int[][] iimage = ImageRead("src/image/A_Victoria.png");
         Reflection ref = new Reflection();
         
-        int[][] oimage = ref.conv(iimage, padding_x, padding_y);  // must be odd number
+        int[][] oimage = ref.convolve(iimage, padding_x, padding_y);  // must be odd number
         ImageWrite(oimage, "src/image/reflection.png");
         
-        int[][] simage = ref.ScaleDown(oimage,padding_x,padding_y);
-        ImageWrite(simage, "src/image/scaledown.png");
+        //int[][] simage = ScaleDown(oimage,padding_x,padding_y);
+        //ImageWrite(simage, "src/image/scaledown.png");
 
     }
 
@@ -71,5 +71,25 @@ public class Main {
 
         }
     }
-    /*--------------------------------------------------------------------------------------------*/    
+    /*--------------------------------------------------------------------------------------------*/
+    public static int[][] ScaleDown(double[][] paddedImg, int x_size, int y_size) {
+        
+        int height=paddedImg.length-y_size+1;
+        int width=paddedImg[0].length-x_size+1;
+        
+        int half_y=y_size/2;
+        int half_x=x_size/2;
+        
+        int[][] scaledDownImg = new int[height][width];
+        
+        for(int i=0; i<height; i++) {
+            for(int j=0; j<width; j++) {                                
+                scaledDownImg[i][j] = (int) paddedImg[half_y+i][half_x+j];
+            }
+        }
+        
+        return scaledDownImg;
+        
+    }
+    /*--------------------------------------------------------------------------------------------*/     
 }

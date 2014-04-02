@@ -1,11 +1,10 @@
 package fullreflection;
 
-
 public class Reflection {
 
     /*--------------------------------------------------------------------------------------------*/
 
-    public int[][] conv(int[][] iimage, int x_size, int y_size) {
+    public int[][] convolve(int[][] iimage, int x_size, int y_size) {
 
         int i, j, lines, samples;
         int padded_lines, padded_samples;
@@ -13,7 +12,7 @@ public class Reflection {
         int[][] oimage;
 
         lines = iimage.length;   //this.lines;
-        samples = iimage.length; //this.samples;
+        samples = iimage[0].length; //this.samples;
         
         padded_lines = lines + y_size - 1;
         padded_samples = samples + x_size - 1;
@@ -90,25 +89,6 @@ public class Reflection {
 
         return oimage;
     }
-    /*--------------------------------------------------------------------------------------------*/   
-    public int[][] ScaleDown(int[][] paddedImg, int x_size, int y_size) {
-        
-        int height=paddedImg.length-y_size+1;
-        int width=paddedImg[0].length-x_size+1;
-        
-        int half_y=y_size/2;
-        int half_x=x_size/2;
-        
-        int[][] scaledDownImg = new int[height][width];
-        
-        for(int i=0; i<512; i++) {
-            for(int j=0; j<512; j++) {                                
-                scaledDownImg[i][j] = paddedImg[half_y+i][half_x+j];
-            }
-        }
-        
-        return scaledDownImg;
-        
-    }
-    /*--------------------------------------------------------------------------------------------*/
+    /*--------------------------------------------------------------------------------------------*/  
+    
 }
