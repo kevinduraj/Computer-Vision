@@ -13,7 +13,7 @@ public class Main {
     private static final int kernelSize = 15;   // Kernel size 
     private static final float sigma = 1.6f;
     private static int treshold = 0;
-    private static String sOutput = "src/image/SobelTreshhold" + treshold + ".png";   
+    private static String sOutput = "src/image/SobelOtsuTreshold.png";   
     
     /*--------------------------------------------------------------------------------------------*/        
     public static void main(String[] args) throws IOException {
@@ -50,8 +50,7 @@ public class Main {
         
         /*------------------ Otsu Binarize ----------------------*/
         OtsuBinarize otsu = new OtsuBinarize("src/image/SobelMagnitute.png");
-        otsu.run();        
-        sOutput = "src/image/SobelTreshhold" + otsu.treshold + ".png";   
+        otsu.run(); 
         File file = new File(sOutput);
         ImageIO.write(otsu.binarized, "png", file);
         
@@ -59,18 +58,19 @@ public class Main {
         /*--------------------- Statistics ----------------------*/
         Statistics stat1 = new Statistics("src/image/SobelMagnitute.png");
         System.out.format("\n1.) src/image/SobelMagnitute.png"  
-                  + "\nSobel Magnitide - Image Output Mean = %.3f\n\n"
+                  + "\n\tSobel Magnitide - Image Output Mean = %.3f\n\n"
                   , stat1.getMean());        
 
         Statistics stat2 = new Statistics("src/image/SobelDirection.png");
         System.out.format("\n2.) src/image/SobelDirection.png"  
-                  + "\nSobel Direction - Image Output Mean = %.3f\n\n"
+                  + "\n\tSobel Direction - Image Output Mean = %.3f\n\n"
                   , stat2.getMean());        
 
         Statistics stat3 = new Statistics(sOutput);
         System.out.format("\n3.) " + sOutput  
-                  + "\n Sobel with Otsu Treshold = " + otsu.treshold 
-                  + " - Image Output Mean = %.3f\n\n\n", stat3.getMean());                
+                  + "\n\tSobel with Otsu Treshold = " + otsu.treshold 
+                  + " - Image Output Mean = %.3f\n", stat3.getMean());        
+        
     }
     /*--------------------------------------------------------------------------------------------*/    
     private static int[][] ProcessPrecentile() throws IOException {
