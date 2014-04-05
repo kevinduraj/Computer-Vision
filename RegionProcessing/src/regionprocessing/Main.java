@@ -3,6 +3,7 @@ package regionprocessing;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.imageio.ImageIO;
 
 public class Main {
@@ -25,15 +26,18 @@ public class Main {
             next[0] = first[0];
             next[1] = first[1];
 
-            do {
-                //System.out.println( "\th=" + next[0] + "\tw=" + next[1]);               
+            do {            
                 next = duraj.getChain(next);
             } while (next[0] != 0 || next[1] != 0);
 
-            System.out.println("--------- " + a + " ---------");
+            
+            PrintWriter writer = new PrintWriter("src/file/contour-" + a + ".txt", "UTF-8");
             for (String s : duraj.list) {
                 System.out.println(s);
+                writer.println(s);
             }
+            writer.close();
+            
         }
 
         System.out.println("\n\n");
