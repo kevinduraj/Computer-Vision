@@ -5,7 +5,7 @@ import java.util.List;
 
 public class DurajChainCode {
     
-    private int pixel;
+    private int pixelChain;
     public int[][]image;
     private int height;
     private int width;
@@ -24,7 +24,7 @@ public class DurajChainCode {
     /*--------------------------------------------------------------------------------------------*/
     public void process( int pixelObject, int pixelChain) {        
         
-        this.pixel = pixelChain;        
+        this.pixelChain = pixelChain;        
         
         /*---- Left to Right ----*/
         for (int j = 0; j < height; j++) {
@@ -84,54 +84,54 @@ public class DurajChainCode {
         int w = pix[1];                 
         int[]n = new int[2];
         
-        image[h][w] = 200;
+        image[h][w] -= 1;
              
         
         // East
-        if(image[h][w+1] == 255) {
+        if(image[h][w+1] == pixelChain) {
             n[0] = h;
             n[1] = w+1;
             list.add("E");
         }
         // North East
-        else if(image[h-1][w+1] == 255) {
+        else if(image[h-1][w+1] == pixelChain) {
             //System.out.println( "\th=" + (h-1) + "\tw=" + (w+1));
             n[0] = h-1;
             n[1] = w+1;
             list.add("NE");
         }            
         // North
-        else if(image[h-1][w] == 255) {
+        else if(image[h-1][w] == pixelChain) {
             n[0] = h-1;
             n[1] = w;
             list.add("N");            
         }        
         // North West
-        else if(image[h-1][w-1] == 255) {
+        else if(image[h-1][w-1] == pixelChain) {
             n[0] = h-1;
             n[1] = w-1;
             list.add("NW");
         }
         // West
-        else if(image[h][w-1] == 255) {
+        else if(image[h][w-1] == pixelChain) {
             n[0] = h;
             n[1] = w-1;
             list.add("W");                                    
         }
         // South West
-        else if(image[h+1][w-1] == 255) {
+        else if(image[h+1][w-1] == pixelChain) {
             n[0] = h+1;
             n[1] = w-1;
             list.add("SW");                        
         }
         // South
-        else if(image[h+1][w] == 255) {
+        else if(image[h+1][w] == pixelChain) {
             n[0] = h+1;
             n[1] = w;
             list.add("S");            
         }                
         // South East
-        else if(image[h+1][w+1] == 255) {
+        else if(image[h+1][w+1] == pixelChain) {
             n[0] = h+1;
             n[1] = w+1;
             list.add("SE");
