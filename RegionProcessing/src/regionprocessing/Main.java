@@ -6,21 +6,35 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Main {
-
  
     private static final int pixelChain = 255;
     
     /*--------------------------------------------------------------------------------------------*/    
     public static void main(String[] args) throws IOException {
         
-        int[][] image = ImageRead("src/image/assignment05.png");                        
+        int[][] image = ImageRead("src/image/assignment05.png");
         //ImageDisplay(array);
         DurajChainCode duraj = new DurajChainCode(image);
         duraj.process(1, 255);
-        duraj.process(2, 225);
-        duraj.process(3, 195);
-        duraj.process(4, 165);
+        //duraj.process(2, 225);
+        //duraj.process(3, 195);
+        //duraj.process(4, 165);
+        
+        int[] first = duraj.findFirst(255);
+        int[] next = new int[2]; 
+        next[0] = first[0];
+        next[1] = first[1];
+        
+        do{             
+            //System.out.println( "\th=" + next[0] + "\tw=" + next[1]);               
+            next = duraj.getChain(next);
+        }
+        while(next[0] !=0 || next[1] !=0 );        
   
+        for(String s: duraj.list) {
+            System.out.print(s + ",");
+        }
+        System.out.println("\n\n");
         //ImageDisplay(array);
         ImageWrite("src/image/DurajChainCode.png", duraj.image);
     }
@@ -34,6 +48,7 @@ public class Main {
         int red[][] = new int[bi.getHeight()][bi.getWidth()];
         int grn[][] = new int[bi.getHeight()][bi.getWidth()];
         int blu[][] = new int[bi.getHeight()][bi.getWidth()];
+        
         for (int i = 0; i < red.length; ++i) {
             for (int j = 0; j < red[i].length; ++j) {
                 red[i][j] = bi.getRGB(j, i) >> 16 & 0xFF;
