@@ -13,7 +13,7 @@ public class Main {
     /*--------------------------------------------------------------------------------------------*/
     public static void main(String[] args) throws IOException {
 
-        int[][] image = ImageRead("src/image/assignment05.png");
+        int[][] image = ImageRead("src/images/assignment05.png");
         //ImageDisplay(array);
         DurajChainCode duraj = new DurajChainCode(image);
 
@@ -30,8 +30,8 @@ public class Main {
                 next = duraj.getChain(next);
             } while (next[0] != 0 || next[1] != 0);
 
-            
-            PrintWriter writer = new PrintWriter("src/file/contour-" + a + ".txt", "UTF-8");
+            /*--- print the countours into a separate files ---*/
+            PrintWriter writer = new PrintWriter("src/files/contour-" + a + ".txt", "UTF-8");
             for (String s : duraj.list) {
                 System.out.println(s);
                 writer.println(s);
