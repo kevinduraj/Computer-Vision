@@ -7,17 +7,22 @@ import javax.imageio.ImageIO;
 
 public class Main {
 
-    private static final int pixel = 255;
+ 
+    private static final int pixelChain = 255;
+    
     /*--------------------------------------------------------------------------------------------*/    
     public static void main(String[] args) throws IOException {
         
-        int[][] array = ImageRead("src/image/assignment05.png");                        
+        int[][] image = ImageRead("src/image/assignment05.png");                        
         //ImageDisplay(array);
-        DurajChainCode duraj = new DurajChainCode(pixel);
-        duraj.process(array);
+        DurajChainCode duraj = new DurajChainCode(image);
+        duraj.process(1, 255);
+        duraj.process(2, 225);
+        duraj.process(3, 195);
+        duraj.process(4, 165);
   
         //ImageDisplay(array);
-        ImageWrite("src/image/DurajChainCode.png", array);
+        ImageWrite("src/image/DurajChainCode.png", duraj.image);
     }
     /*--------------------------------------------------------------------------------------------*/
 
@@ -62,7 +67,7 @@ public class Main {
         for (int i = 0; i < img.length; i++) {
             for (int j = 0; j < img[i].length; j++) {
 
-                if ((img[i][j] == 1) || (img[i][j] == pixel)) {
+                if ((img[i][j] == 1) || (img[i][j] == pixelChain)) {
                     System.out.format("%1d ", img[i][j]);
                 } else {
                     System.out.print("  ");
